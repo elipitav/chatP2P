@@ -4,6 +4,7 @@
  */
 package clases;
 
+import gui.FachadaGui;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.event.ActionEvent;
@@ -17,27 +18,29 @@ import javafx.stage.Stage;
  *
  * @author eliseopitavilarino
  */
-public class Prueba extends Application{
+public class FachadaAplicacion extends Application{
+    private FachadaGui fgui;
+    
+    public FachadaAplicacion() {
+        fgui = new gui.FachadaGui(this);
+    }
+    
     public static void main(String[] args) {
         launch(args);
     }
     
+    public void iniciaInterfazUsuario(Stage stage) throws Exception {
+        fgui.iniciarVista(stage);
+    }
+
     @Override
-    public void start(Stage primaryStage) {
-        primaryStage.setTitle("Hello poronguita!");
-        Button btn = new Button();
-        btn.setText("Say 'Hello World'");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
- 
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
-            }
-        });
-        
-        StackPane root = new StackPane();
-        root.getChildren().add(btn);
-        primaryStage.setScene(new Scene(root, 300, 250));
-        primaryStage.show();
+    public void start(Stage stage) {
+        FachadaAplicacion fa;
+        fa = new FachadaAplicacion();
+        try {
+            fa.iniciaInterfazUsuario(stage);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());;
+        }
     }
 }

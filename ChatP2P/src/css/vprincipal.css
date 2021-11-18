@@ -1,7 +1,124 @@
-/*
- * Empty Stylesheet file.
- */
+*{
+    -cor-secundaria: #efedb8;
+    -cor-bordes: lightgray;
+    -cor-accent: lightblue;
+    -cor-fondo: #1d1d1d;
+    -cor-cancelado: #b80c00;
+    -cor-encurso: #11ad00;
 
-.mainFxmlClass {
+}
 
+.btnMenu {
+    -fx-padding: 5 22 5 22;   
+    -fx-border-width: 0;
+    -fx-background-radius: 0;
+    -fx-background-color: #1d1d1d;
+    -fx-background-insets: 0 0 0 0;
+    -fx-effect: innershadow( three-pass-box , #1d1d1d, 10 , 0 , 0 , 0 );
+}
+
+.btnMenu:hover {
+    -fx-background-color: #3a3a3a;
+}
+
+.btnMenu:focused {
+    -fx-background-color: #3a3a3a;
+}
+
+.btnMenu:selected {
+    -fx-background-color: #424242;
+}
+
+.btnMenu:pressed, .btnMenu:default:hover:pressed {
+    -fx-background-color: #1d1d1d;
+    -fx-text-fill: #d8d8d8;
+}
+
+/*Non o necesito creo*/
+
+.btnMenu:disabled, .btnMenu:default:disabled {
+    -fx-opacity: 0.4;
+    -fx-background-color: #1d1d1d;
+    -fx-text-fill: white;
+}
+
+.btnMenu:default {
+    -fx-background-color: -fx-focus-color;
+    -fx-text-fill: #ffffff;
+}
+
+.btnMenu:default:hover {
+    -fx-background-color: derive(-fx-focus-color,30%);
+}
+
+#panelTitulo {
+    -fx-background-color: black;
+}
+
+#panelLateral {
+    -fx-background-color: #757575;
+}
+
+#etqTitulo {
+    -fx-font-size: 14pt;
+}
+
+#etqFLC {
+    -fx-text-fill: #efedb8;
+    -fx-font-family: "Calibri";
+    -fx-font-weight: bold;
+}
+
+/*Etiquetas de informacion*/
+.etqInfo{
+    -fx-font-size: 10pt;
+    -fx-text-fill: #dbdbdb;
+}
+
+/*Etiqueta de erro*/
+.etqErro{
+    -fx-text-fill: red;
+}
+
+/*Lendas das táboas do voos*/
+.hBoxCancelado{
+    -fx-background-color: #1d1d1d;
+}
+
+.labCanceladoTexto{
+    -fx-text-fill: -cor-bordes;
+}
+
+.labCanceladoCor{
+    -fx-background-color: -cor-bordes, -cor-cancelado;
+    -fx-background-insets: 0, 1;
+}
+
+.labEnCursoCor{
+    -fx-background-color: -cor-bordes, -cor-encurso;
+    -fx-background-insets: 0, 1;
+}
+
+/*Marcos e Titulos das taboas*/
+.vBoxFondoTabla{
+    -fx-background-radius: 9 9 3 3;
+    -fx-background-color: -cor-accent;
+}
+
+.labTituloTabla{
+    -fx-font-size: 14pt;
+    -fx-text-fill: derive(white, -80%);
+}
+
+/*Marcos e titulos xerais*/
+.marco{
+    -fx-background-radius: 10, 10;
+    -fx-background-insets: 0, 2;
+    -fx-background-color: -cor-accent, -cor-fondo;
+}
+
+.etqTituloMarco{
+    -fx-font-size: 13pt;
+    -fx-text-fill: -cor-accent;
+    -fx-background-color: #1d1d1d;
 }
