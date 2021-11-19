@@ -46,7 +46,7 @@
                   </AnchorPane>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.rowIndex="1">
                      <children>
-                        <TextArea id="textAreaChat" disable="true" layoutX="45.0" layoutY="30.0" prefHeight="324.0" prefWidth="472.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <TextArea id="textAreaChat" fx:id="textAreaChat" disable="true" layoutX="45.0" layoutY="30.0" prefHeight="324.0" prefWidth="472.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children>
                   </AnchorPane>
                   <GridPane prefHeight="38.0" prefWidth="472.0" GridPane.rowIndex="2">
@@ -60,12 +60,12 @@
                      <children>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0">
                            <children>
-                              <TextField id="textFieldMensaje" layoutX="10.0" layoutY="11.0" prefHeight="29.0" prefWidth="382.0" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="11.0" />
+                              <TextField id="textFieldMensaje" fx:id="textFieldMensaje" layoutX="10.0" layoutY="11.0" onKeyReleased="#activarBoton" prefHeight="29.0" prefWidth="382.0" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="11.0" />
                            </children>
                         </AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
                            <children>
-                              <Button id="botonEnviar" layoutX="7.0" layoutY="12.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="72.0" style="-fx-font-size: 12;" text="Enviar" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="12.0" />
+                              <Button id="botonEnviar" fx:id="botonEnviar" disable="true" layoutX="7.0" layoutY="12.0" mnemonicParsing="false" onAction="#enviarMensaje" prefHeight="32.0" prefWidth="72.0" style="-fx-font-size: 12;" text="Enviar" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="12.0" />
                            </children>
                         </AnchorPane>
                      </children>

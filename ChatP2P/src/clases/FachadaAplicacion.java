@@ -43,4 +43,8 @@ public class FachadaAplicacion extends Application{
             System.out.println(ex.getMessage());;
         }
     }
+    
+    public void enviarMensaje(String mensaje){
+        //this.emisor.enviarMensaje(mensaje);
+    }
 }

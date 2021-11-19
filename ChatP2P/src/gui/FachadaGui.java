@@ -21,6 +21,7 @@ public class FachadaGui {
 
         //Collemos o controlador de Acceder
         VPrincipalController contPrincipal = loader.getController();
+        contPrincipal.setFgui(this);
 
         primaryStage.setTitle("ChatP2P");
         primaryStage.setScene(new Scene(root));
@@ -29,6 +30,10 @@ public class FachadaGui {
         //Controlador.setStageIcon(primaryStage);
         primaryStage.show();
 
+    }
+    
+    public void enviarMensaje(String mensaje){
+        fa.enviarMensaje(mensaje);
     }
 
 }
