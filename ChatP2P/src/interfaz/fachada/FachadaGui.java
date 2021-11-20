@@ -16,7 +16,7 @@ public class FachadaGui {
     }
 
     public void iniciarVista(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(FachadaGui.class.getResource("/ventanas/vPrincipal.fxml"));
+        FXMLLoader loader = new FXMLLoader(FachadaGui.class.getResource("/interfaz/ventanas/VPrincipal.fxml"));
         Pane root = (Pane) loader.load();
 
         //Collemos o controlador de Acceder
