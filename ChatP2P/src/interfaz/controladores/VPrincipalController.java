@@ -23,10 +23,21 @@ import javafx.scene.input.KeyEvent;
 public class VPrincipalController extends Controlador implements Initializable {
     
     private FachadaGui fgui;
+    private String usuario;
 
     public void setFgui(FachadaGui fgui) {
         this.fgui = fgui;
     }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+    
+    
     
     @FXML
     private Button botonEnviar;

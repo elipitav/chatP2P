@@ -25,7 +25,7 @@ public class ServidorP2PImpl extends UnicastRemoteObject implements ServidorP2PI
     }
     
     @Override
-    public void registrarCliente(CallbackClienteP2PInterfaz cliente, String nombre) {
+    public void registrarCliente(CallbackClienteP2PInterfaz cliente, String nombre) throws java.rmi.RemoteException {
         
         //Añadimos al cliente al hashmap de clientes conectados
         clientes.put(nombre, cliente);
@@ -37,7 +37,7 @@ public class ServidorP2PImpl extends UnicastRemoteObject implements ServidorP2PI
     }
 
     @Override
-    public void eliminarCliente(String nombre) {
+    public void eliminarCliente(String nombre) throws java.rmi.RemoteException {
         
         //Eliminamos al cliente del hashmap de clientes conectados
         clientes.remove(nombre);

@@ -13,8 +13,8 @@ import aplicacion.cliente.CallbackClienteP2PInterfaz;
 public interface ServidorP2PInterfaz extends Remote {
     
     //Método a ejecutar cada vez que se conecte un nuevo cliente
-    public void registrarCliente(CallbackClienteP2PInterfaz cliente, String nombre);
+    public void registrarCliente(CallbackClienteP2PInterfaz cliente, String nombre) throws java.rmi.RemoteException;
     
     //Método a ejecutar cada vez que se desconecte un cliente
-    public void eliminarCliente(String nombre);
-}
+    public void eliminarCliente(String nombre) throws java.rmi.RemoteException;
+    }
