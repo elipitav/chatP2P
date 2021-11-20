@@ -4,7 +4,7 @@
  */
 package interfaz.controladores;
 
-import interfaz.gui.FachadaGui;
+import interfaz.fachada.FachadaGui;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;

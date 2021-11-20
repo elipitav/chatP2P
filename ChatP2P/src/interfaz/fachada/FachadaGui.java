@@ -1,6 +1,6 @@
-package interfaz.gui;
+package interfaz.fachada;
 
-import clases.FachadaAplicacion;
+import aplicacion.fachada.FachadaAplicacion;
 import interfaz.controladores.Controlador;
 import interfaz.controladores.VPrincipalController;
 import javafx.fxml.FXMLLoader;
