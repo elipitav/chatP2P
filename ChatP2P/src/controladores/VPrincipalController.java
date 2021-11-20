@@ -43,7 +43,7 @@ public class VPrincipalController extends Controlador implements Initializable {
         
     }    
     
-    //Método para tener activado el botón cuando haya texto
+    //Método para tener activado el botón cuando haya texto en el textiField
     @FXML
     private void activarBoton(KeyEvent event) {
         if (textFieldMensaje.getText().equals("")){
