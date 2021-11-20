@@ -60,12 +60,12 @@
                      <children>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0">
                            <children>
-                              <TextField id="textFieldMensaje" fx:id="textFieldMensaje" layoutX="10.0" layoutY="11.0" onKeyReleased="#activarBoton" prefHeight="29.0" prefWidth="382.0" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="11.0" />
+                              <TextField id="textFieldMensaje" fx:id="textFieldMensaje" layoutX="10.0" layoutY="11.0" onAction="#onEnter" onKeyReleased="#activarBoton" prefHeight="29.0" prefWidth="382.0" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="11.0" />
                            </children>
                         </AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
                            <children>
-                              <Button id="botonEnviar" fx:id="botonEnviar" disable="true" layoutX="7.0" layoutY="12.0" mnemonicParsing="false" onAction="#enviarMensaje" prefHeight="32.0" prefWidth="72.0" style="-fx-font-size: 12;" text="Enviar" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="12.0" />
+                              <Button id="botonEnviar" fx:id="botonEnviar" disable="true" layoutX="7.0" layoutY="12.0" mnemonicParsing="false" onAction="#enviarMensajeClick" prefHeight="32.0" prefWidth="72.0" style="-fx-font-size: 12;" text="Enviar" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="12.0" />
                            </children>
                         </AnchorPane>
                      </children>

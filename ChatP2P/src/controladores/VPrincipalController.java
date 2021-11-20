@@ -13,7 +13,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 /**
@@ -55,6 +54,18 @@ public class VPrincipalController extends Controlador implements Initializable {
         }
     }
     
+    //Método para enviar mensaje pulsando enter
+    @FXML
+    private void onEnter(ActionEvent event) {
+        this.enviarMensaje();
+    }
+    
+    //Método para enviar mensaje pulsando el botón
+    @FXML
+    private void enviarMensajeClick(ActionEvent event) {
+        this.enviarMensaje();
+    }
+    
     //Método para enviar un mensaje
     private void enviarMensaje() {
         String mensaje = "Yo: " + textFieldMensaje.getText() + "\n";
@@ -64,27 +75,9 @@ public class VPrincipalController extends Controlador implements Initializable {
         //fgui.enviarMensaje(mensaje);
     }
     
-    
-    
     //Método para añadir mensaje al textArea cuando llega o se envía un mensaje
     public void anhadirMensaje(String mensaje) {
         textAreaChat.appendText(mensaje);
-    }
-
-    //Método para enviar mensaje pulsando Enter
-    @FXML
-    private void enviarMensajeEnter(KeyEvent event) {
-       
-        if (event.getCharacter().equals("\n") && this.textFieldMensaje.getText().length() != 0){
-            this.enviarMensaje();
-        }
-        
-    }
-    
-    //Método para enviar mensaje pulsando el botón
-    @FXML
-    private void enviarMensajeClick(ActionEvent event) {
-        this.enviarMensaje();
     }
     
 }
