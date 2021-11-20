@@ -4,7 +4,7 @@
  */
 package clases;
 
-import gui.FachadaGui;
+import interfaz.gui.FachadaGui;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.event.ActionEvent;
@@ -22,7 +22,7 @@ public class FachadaAplicacion extends Application{
     private FachadaGui fgui;
     
     public FachadaAplicacion() {
-        fgui = new gui.FachadaGui(this);
+        fgui = new interfaz.gui.FachadaGui(this);
     }
     
     public static void main(String[] args) {

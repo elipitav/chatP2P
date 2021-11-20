@@ -1,8 +1,8 @@
-package gui;
+package interfaz.gui;
 
 import clases.FachadaAplicacion;
-import controladores.Controlador;
-import controladores.VPrincipalController;
+import interfaz.controladores.Controlador;
+import interfaz.controladores.VPrincipalController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;

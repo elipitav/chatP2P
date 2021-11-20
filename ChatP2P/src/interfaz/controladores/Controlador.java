@@ -1,4 +1,4 @@
-package controladores;
+package interfaz.controladores;
 
 import java.io.IOException;
 import java.net.URL;

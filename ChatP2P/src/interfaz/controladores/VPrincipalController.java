@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
  */
-package controladores;
+package interfaz.controladores;
 
-import gui.FachadaGui;
+import interfaz.gui.FachadaGui;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
