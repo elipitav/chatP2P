@@ -25,27 +25,39 @@ public class ServidorP2PImpl extends UnicastRemoteObject implements ServidorP2PI
     }
     
     @Override
-    public void registrarCliente(CallbackClienteP2PInterfaz cliente, String nombre) throws java.rmi.RemoteException {
+    public synchronized HashMap<String, CallbackClienteP2PInterfaz> registrarCliente(CallbackClienteP2PInterfaz cliente, String nombre) throws java.rmi.RemoteException {
         
-        //Añadimos al cliente al hashmap de clientes conectados
-        clientes.put(nombre, cliente);
-        
-        //Avisamos a todos los clientes conectados (Todos son amigos)
-        for(Map.Entry<String, CallbackClienteP2PInterfaz> entry : this.clientes.entrySet()) {
-            entry.getValue().amigoConectado(cliente, nombre);
+        if (!clientes.keySet().contains(cliente)){
+            //Añadimos al cliente al hashmap de clientes conectados
+            clientes.put(nombre, cliente);
+            System.out.println("Nuevo cliente conectado: " + cliente);
+
+            //Avisamos a todos los clientes conectados (Todos son amigos)
+            for(Map.Entry<String, CallbackClienteP2PInterfaz> entry : this.clientes.entrySet()) {
+                entry.getValue().amigoConectado(cliente, nombre);
+            }
+            
+            //Enviamos al cliente la lista completa de clientes conectados (todos son amigos)
+            return clientes;
         }
+        
+        return null;
     }
 
     @Override
-    public void eliminarCliente(String nombre) throws java.rmi.RemoteException {
+    public synchronized void eliminarCliente(String nombre) throws java.rmi.RemoteException {
         
         //Eliminamos al cliente del hashmap de clientes conectados
-        clientes.remove(nombre);
+        if (clientes.remove(nombre) != null){
+            System.out.println("Cliente desconectado: " + nombre);
+            //Avisamos a todos los clientes conectados (Todos son amigos)
+            for(Map.Entry<String, CallbackClienteP2PInterfaz> entry : this.clientes.entrySet()) {
+                entry.getValue().amigoDesconectado(nombre);
+            }
+        } else{
+            System.out.println("Error en desconexion: el cliente " + nombre + "no estaba conectado");
+        }        
         
-        //Avisamos a todos los clientes conectados (Todos son amigos)
-        for(Map.Entry<String, CallbackClienteP2PInterfaz> entry : this.clientes.entrySet()) {
-            entry.getValue().amigoDesconectado(nombre);
-        }
-    }
+    }   
     
 }

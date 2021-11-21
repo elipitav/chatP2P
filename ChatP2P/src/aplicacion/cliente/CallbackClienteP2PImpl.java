@@ -27,7 +27,7 @@ public class CallbackClienteP2PImpl extends UnicastRemoteObject implements Callb
     }
 
     @Override
-    public void amigoConectado(CallbackClienteP2PInterfaz amigo, String nombre) throws java.rmi.RemoteException {
+    public synchronized void amigoConectado(CallbackClienteP2PInterfaz amigo, String nombre) throws java.rmi.RemoteException {
         
         //Mostrar notificación de amigo conectado
         
@@ -36,7 +36,7 @@ public class CallbackClienteP2PImpl extends UnicastRemoteObject implements Callb
     }
 
     @Override
-    public void amigoDesconectado(String nombre) throws java.rmi.RemoteException {
+    public synchronized void amigoDesconectado(String nombre) throws java.rmi.RemoteException {
         
        //Mostrar mensaje de amigo desconectado
        

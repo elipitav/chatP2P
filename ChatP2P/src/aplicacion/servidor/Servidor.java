@@ -1,3 +1,5 @@
+package aplicacion.servidor;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -27,15 +29,15 @@ public class Servidor {
         try{     
             
             //Leemos el numero de puerto
-            System.out.println("Introduzca el puerto del registro RMI:");
-            portNum = (br.readLine()).trim();
+            //System.out.println("Introduzca el puerto del registro RMI:");
+            portNum = "1099";
             int RMIPortNum = Integer.parseInt(portNum);
          
             //Iniciamos el registro
             startRegistry(RMIPortNum);
             
             //Instanciamos el objeto
-            ServidorP2PInterfaz exportedObj = new ServidorP2PImpl();
+            ServidorP2PImpl exportedObj = new ServidorP2PImpl();
             
             //Registramos el objeto bajo el nombre "servidorChat"
             registryURL = "rmi://localhost:" + portNum + "/servidorChat";
