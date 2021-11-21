@@ -32,7 +32,7 @@ public class FachadaAplicacion extends Application{
     
     public static void main(String[] args) {
         
-        /*try {
+        try {
             int RMIPort;         
             String hostName;
 
@@ -47,7 +47,7 @@ public class FachadaAplicacion extends Application{
               new CallbackClienteP2PImpl("manolo");
             // register for callback
             System.out.println("holas");
-            //servidor.registrarCliente(callbackObj, "manolo");
+            servidor.registrarCliente(callbackObj, "manolo");
             System.out.println("Registered for callback.");
             
             //Poner esto en el código de cerrar la ventana
@@ -57,7 +57,7 @@ public class FachadaAplicacion extends Application{
         catch (Exception e) {
           System.out.println(
             "Excepcion en el cliente: " + e);
-        }*/
+        }
         
         launch(args);
     }
