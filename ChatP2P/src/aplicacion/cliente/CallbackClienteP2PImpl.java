@@ -18,12 +18,15 @@ public class CallbackClienteP2PImpl extends UnicastRemoteObject implements Callb
     private String nombre;
     //Amigos del cliente conectados
     private HashMap<String,CallbackClienteP2PInterfaz> amigos;
+    //Chats abiertos
+    private HashMap<String, String> chats;
     
     
     public CallbackClienteP2PImpl(String nombre) throws RemoteException{
         super();
         this.nombre = nombre;
         this.amigos = new HashMap<>();
+        this.chats = new HashMap<>();
     }
 
     @Override
@@ -33,6 +36,8 @@ public class CallbackClienteP2PImpl extends UnicastRemoteObject implements Callb
         
         //Añadimos al cliente al hashmap de amigos conectados
         this.amigos.put(nombre,amigo);
+        //Creamos un chat con este amigo
+        this.chats.put(nombre,"");
     }
 
     @Override
@@ -40,8 +45,23 @@ public class CallbackClienteP2PImpl extends UnicastRemoteObject implements Callb
         
        //Mostrar mensaje de amigo desconectado
        
-       //Eleminamos al cliente del hashmap de amigos conectados
+       //Eliminamos al cliente del hashmap de amigos conectados
        this.amigos.remove(nombre);
+       //Eliminamos el char con este amigo
+       this.chats.remove(nombre);
+    }
+
+    @Override
+    public void recibirMensaje(String emisor, String mensaje) {
+        //Obtener el mensaje y mostrarlo por pantalla
+        
+        //Añadimos el mensaje al chat con ese amigo
+        this.chats.get(emisor).concat(emisor+": "+mensaje+"\n");
+    }
+    
+    public void enviarMensaje(String receptor, String mensaje){
+        //Obtenemos la interfaz remota del receptor y la usamos para enviar el mensaje
+        this.amigos.get(receptor).recibirMensaje(this.nombre, mensaje);
     }
     
     

@@ -23,12 +23,21 @@ import javafx.scene.input.KeyEvent;
 public class VPrincipalController extends Controlador implements Initializable {
     
     private FachadaGui fgui;
-    private String usuario;
+    private String usuario; //Usuario que hace uso de la aplicación
+    private String receptor; //Persona con la que habla el usuario en cada momento
 
     public void setFgui(FachadaGui fgui) {
         this.fgui = fgui;
     }
 
+    public String getReceptor() {
+        return receptor;
+    }
+
+    public void setReceptor(String receptor) {
+        this.receptor = receptor;
+    }
+    
     public String getUsuario() {
         return usuario;
     }
@@ -36,8 +45,6 @@ public class VPrincipalController extends Controlador implements Initializable {
     public void setUsuario(String usuario) {
         this.usuario = usuario;
     }
-    
-    
     
     @FXML
     private Button botonEnviar;
@@ -51,7 +58,7 @@ public class VPrincipalController extends Controlador implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+        botonEnviar.setDisable(true);
     }    
     
     //Método para tener activado el botón cuando haya texto en el textiField
@@ -79,16 +86,22 @@ public class VPrincipalController extends Controlador implements Initializable {
     
     //Método para enviar un mensaje
     private void enviarMensaje() {
-        String mensaje = "Yo: " + textFieldMensaje.getText() + "\n";
-        textAreaChat.appendText(mensaje);
+        //Obtenemos el mensaje del textfield
+        String mensaje = textFieldMensaje.getText();
+        //Vacíamos el textfield
         textFieldMensaje.setText("");
+        //Añadimos el mensaje al textArea
+        textAreaChat.appendText("Yo: " + mensaje + "\n");
+        //Desactivamos el botón
         botonEnviar.setDisable(true);
-        //fgui.enviarMensaje(mensaje);
+        //Enviamos el mensaje al receptor
+        fgui.enviarMensaje(mensaje,receptor);
     }
     
-    //Método para añadir mensaje al textArea cuando llega o se envía un mensaje
-    public void anhadirMensaje(String mensaje) {
-        textAreaChat.appendText(mensaje);
+    //Método para recibir mensaje
+    public void recibirMensaje(String mensaje, String usuario){
+        //Añadimos el mensaje al textArea
+        textAreaChat.appendText(usuario+": " + mensaje + "\n");
     }
     
 }

@@ -14,6 +14,9 @@ public interface CallbackClienteP2PInterfaz {
     //Método para informar a un cliente de que un amigo se ha conectado
     public void amigoConectado(CallbackClienteP2PInterfaz amigo, String nombre) throws java.rmi.RemoteException;
     
-    //Métooo para informar a un cliente de que un amigo se ha desconectado
+    //Método para informar a un cliente de que un amigo se ha desconectado
     public void amigoDesconectado(String nombre) throws java.rmi.RemoteException;
+    
+    //Método para recibir un mensaje
+    public void recibirMensaje(String emisor, String mensaje);
 }

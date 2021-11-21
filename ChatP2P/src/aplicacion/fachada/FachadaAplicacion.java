@@ -17,51 +17,35 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import java.rmi.Naming;
-
+import java.rmi.RemoteException;
 
 /**
  *
  * @author eliseopitavilarino
  */
-public class FachadaAplicacion extends Application{
-    private FachadaGui fgui;
+public class FachadaAplicacion extends Application {
     
+    private final static String registryURL = "rmi://localhost:1099/servidorChat";
+    
+    private FachadaGui fgui;
+    private CallbackClienteP2PImpl cliente;
+    private ServidorP2PInterfaz servidor;
+
     public FachadaAplicacion() {
         fgui = new interfaz.fachada.FachadaGui(this);
-    }
-    
-    public static void main(String[] args) {
-        
         try {
-            int RMIPort;         
-            String hostName;
-
-            String registryURL = "rmi://localhost:1099/servidorChat";  
-            // find the remote object and cast it to an 
-            //   interface object
-            ServidorP2PInterfaz servidor =
-              (ServidorP2PInterfaz)Naming.lookup(registryURL);
+            //Obtenemos la interfaz remota del servidor
+            servidor = (ServidorP2PInterfaz) Naming.lookup(registryURL);
             System.out.println("Lookup completed " );
+        } catch (Exception e) {
+            System.out.println("Excepcion en el cliente: " + e);
+        }
+    }    
 
-            CallbackClienteP2PInterfaz callbackObj = 
-              new CallbackClienteP2PImpl("manolo");
-            // register for callback
-            System.out.println("holas");
-            servidor.registrarCliente(callbackObj, "manolo");
-            System.out.println("Registered for callback.");
-            
-            //Poner esto en el código de cerrar la ventana
-            //servidor.eliminarCliente("manolo");
-            //System.out.println("Unregistered for callback.");
-        }
-        catch (Exception e) {
-          System.out.println(
-            "Excepcion en el cliente: " + e);
-        }
-        
+    public static void main(String[] args) {
         launch(args);
     }
-    
+
     public void iniciaInterfazUsuario(Stage stage) throws Exception {
         fgui.iniciarVista(stage);
     }
@@ -77,7 +61,23 @@ public class FachadaAplicacion extends Application{
         }
     }
     
-    public void enviarMensaje(String mensaje){
-        //this.emisor.enviarMensaje(mensaje);
+    public void registrarCliente(String nombre){
+        try{
+            //Obtenemos una instancia de la implementación
+            this.cliente = new CallbackClienteP2PImpl(nombre);
+            
+            //Enviamos la interfaz
+            this.servidor.registrarCliente((CallbackClienteP2PInterfaz)this.cliente, nombre);
+            System.out.println("Registered for callback.");
+        }
+        catch (Exception e) {
+            System.out.println("Excepcion en el cliente: " + e);
+        }
     }
+    
+    public void enviarMensaje(String receptor, String mensaje) {
+        //Invocamos al metodo del cliente para enviar el mensaje
+        this.cliente.enviarMensaje(receptor, mensaje);
+    }
+    
 }

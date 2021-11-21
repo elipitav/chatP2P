@@ -32,8 +32,8 @@ public class FachadaGui {
 
     }
     
-    public void enviarMensaje(String mensaje){
-        fa.enviarMensaje(mensaje);
+    public void enviarMensaje(String mensaje, String receptor){
+        fa.enviarMensaje(mensaje,receptor);
     }
 
 }

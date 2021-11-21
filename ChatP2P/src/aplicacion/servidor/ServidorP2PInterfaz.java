@@ -18,4 +18,5 @@ public interface ServidorP2PInterfaz extends Remote {
     
     //Método a ejecutar cada vez que se desconecte un cliente
     public void eliminarCliente(String nombre) throws java.rmi.RemoteException;
-    }
+ 
+}
