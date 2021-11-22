@@ -3,6 +3,7 @@ package interfaz.fachada;
 import aplicacion.fachada.FachadaAplicacion;
 import interfaz.controladores.Controlador;
 import interfaz.controladores.VAccederController;
+import interfaz.controladores.VPrincipalController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -11,6 +12,7 @@ import javafx.stage.Stage;
 public class FachadaGui {
 
     FachadaAplicacion fa;
+    VPrincipalController vp;
 
     public FachadaGui(FachadaAplicacion fa) {
         this.fa=fa;
@@ -33,12 +35,24 @@ public class FachadaGui {
 
     }
     
-    public void enviarMensaje(String mensaje, String receptor){
-        fa.enviarMensaje(mensaje,receptor);
+    public void enviarMensaje(String receptor, String mensaje){
+        fa.enviarMensaje(receptor,mensaje);
     }
     
     public void registrarCliente(String nombre){
         fa.registrarCliente(nombre);
+    }
+    
+    public void recibirMensaje(String emisor, String mensaje){
+        vp.recibirMensaje(emisor, mensaje);
+    }
+
+    public VPrincipalController getVp() {
+        return vp;
+    }
+
+    public void setVp(VPrincipalController vp) {
+        this.vp = vp;
     }
 
 }

@@ -4,6 +4,7 @@
  */
 package aplicacion.cliente;
 
+import aplicacion.fachada.FachadaAplicacion;
 import aplicacion.servidor.ServidorP2PInterfaz;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -26,11 +27,14 @@ public class CallbackClienteP2PImpl extends UnicastRemoteObject implements Callb
     private HashMap<String,CallbackClienteP2PInterfaz> amigos;
     //Chats abiertos
     private HashMap<String, String> chats;
+    //Fachada aplicación
+    private FachadaAplicacion fa;
     
     
-    public CallbackClienteP2PImpl(String nombre, ServidorP2PInterfaz servidor) throws RemoteException{
+    public CallbackClienteP2PImpl(String nombre, ServidorP2PInterfaz servidor, FachadaAplicacion fa) throws RemoteException{
         super();
         this.nombre = nombre;
+        this.fa = fa;
         this.servidor = servidor;
         this.amigos = new HashMap<>();
         this.chats = new HashMap<>();
@@ -52,7 +56,7 @@ public class CallbackClienteP2PImpl extends UnicastRemoteObject implements Callb
     public synchronized void amigoDesconectado(String nombre) throws java.rmi.RemoteException {
         
        //Mostrar mensaje de amigo desconectado
-       
+        System.out.println(nombre+" conectado");
        //Eliminamos al cliente del hashmap de amigos conectados
        this.amigos.remove(nombre);
        //Eliminamos el char con este amigo
@@ -62,7 +66,7 @@ public class CallbackClienteP2PImpl extends UnicastRemoteObject implements Callb
     @Override
     public void recibirMensaje(String emisor, String mensaje) throws java.rmi.RemoteException{
         //Obtener el mensaje y mostrarlo por pantalla
-        
+        fa.recibirMensaje(emisor, mensaje);
         //Añadimos el mensaje al chat con ese amigo
         this.chats.get(emisor).concat(emisor+": "+mensaje+"\n");
     }
@@ -74,6 +78,7 @@ public class CallbackClienteP2PImpl extends UnicastRemoteObject implements Callb
                 System.out.println(entry.getKey());
                 System.out.println(entry.getValue());
             }
+            System.out.println(receptor);
             this.amigos.get(receptor).recibirMensaje(this.nombre, mensaje);
         }
         catch(Exception e){
@@ -84,7 +89,7 @@ public class CallbackClienteP2PImpl extends UnicastRemoteObject implements Callb
     
     public void registrarse(){
         try {
-            this.amigos=this.servidor.registrarCliente(this, nombre);
+            this.servidor.registrarCliente(this, nombre);
             System.out.println("Registered for callback.");
         } catch (Exception e) {
             System.out.println("Excepcion en el cliente: " + e);

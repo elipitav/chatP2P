@@ -14,7 +14,7 @@ import java.util.HashMap;
 public interface ServidorP2PInterfaz extends Remote {
     
     //Método a ejecutar cada vez que se conecte un nuevo cliente
-    public HashMap<String, CallbackClienteP2PInterfaz> registrarCliente(CallbackClienteP2PInterfaz cliente, String nombre) throws java.rmi.RemoteException;
+    public void registrarCliente(CallbackClienteP2PInterfaz cliente, String nombre) throws java.rmi.RemoteException;
     
     //Método a ejecutar cada vez que se desconecte un cliente
     public void eliminarCliente(String nombre) throws java.rmi.RemoteException;

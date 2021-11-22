@@ -32,11 +32,6 @@ public class FachadaAplicacion extends Application {
 
     public FachadaAplicacion() {
         fgui = new FachadaGui(this);
-        try {
-            
-        } catch (Exception e) {
-            System.out.println("Excepcion en el cliente: " + e);
-        }
     }    
 
     public static void main(String[] args) {
@@ -63,7 +58,7 @@ public class FachadaAplicacion extends Application {
             ServidorP2PInterfaz servidor = (ServidorP2PInterfaz) Naming.lookup(registryURL);
             System.out.println("Lookup completed");
             //Obtenemos una instancia de la implementación
-            this.cliente = new CallbackClienteP2PImpl(nombre, servidor);
+            this.cliente = new CallbackClienteP2PImpl(nombre, servidor,this);
             this.cliente.registrarse();
         }
         catch (Exception e) {
@@ -74,6 +69,10 @@ public class FachadaAplicacion extends Application {
     public void enviarMensaje(String receptor, String mensaje) {
         //Invocamos al metodo del cliente para enviar el mensaje
         this.cliente.enviarMensaje(receptor, mensaje);
+    }
+    
+    public void recibirMensaje(String emisor, String mensaje){
+        fgui.recibirMensaje(emisor, mensaje);
     }
     
 }

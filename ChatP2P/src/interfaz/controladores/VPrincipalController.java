@@ -96,13 +96,16 @@ public class VPrincipalController extends Controlador implements Initializable {
         //Desactivamos el botón
         botonEnviar.setDisable(true);
         //Enviamos el mensaje al receptor
-        fgui.enviarMensaje(mensaje,receptor);
+        fgui.enviarMensaje(receptor,mensaje);
     }
     
     //Método para recibir mensaje
-    public void recibirMensaje(String mensaje, String usuario){
-        //Añadimos el mensaje al textArea
-        textAreaChat.appendText(usuario+": " + mensaje + "\n");
+    public void recibirMensaje(String emisor, String mensaje){
+        //Solo si el chat actual se corresponde con el del emisor lo mostramos por pantalla
+        if(this.receptor.equals(emisor)){
+            //Añadimos el mensaje al textArea
+            textAreaChat.appendText(emisor+": " + mensaje + "\n");
+        }
     }
     
 }
