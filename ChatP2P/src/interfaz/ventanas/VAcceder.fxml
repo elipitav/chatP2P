@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane id="AnchorPane" prefHeight="238.0" prefWidth="400.0" styleClass="root" stylesheets="@../css/estiloBase.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="interfaz.controladores.VAccederController">
+<AnchorPane id="AnchorPane" prefHeight="238.0" prefWidth="400.0" styleClass="root" stylesheets="@../css/estiloBase.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interfaz.controladores.VAccederController">
    <children>
       <GridPane layoutY="38.0" prefHeight="300.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -43,7 +43,7 @@
                   </AnchorPane>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
                      <children>
-                        <TextField layoutX="14.0" layoutY="28.0" maxHeight="30.0" maxWidth="210.0" minHeight="30.0" minWidth="210.0" prefHeight="30.0" prefWidth="210.0" AnchorPane.bottomAnchor="28.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="28.0" />
+                        <TextField fx:id="textFieldNombreUsuario" layoutX="14.0" layoutY="28.0" maxHeight="30.0" maxWidth="210.0" minHeight="30.0" minWidth="210.0" prefHeight="30.0" prefWidth="210.0" AnchorPane.bottomAnchor="28.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="28.0" />
                      </children>
                   </AnchorPane>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
@@ -53,14 +53,14 @@
                   </AnchorPane>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
-                        <TextField layoutX="-13.0" layoutY="29.0" maxHeight="30.0" maxWidth="210.0" minHeight="30.0" minWidth="210.0" prefHeight="30.0" prefWidth="210.0" AnchorPane.bottomAnchor="23.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.0" />
+                        <TextField fx:id="textFieldContrasenha" layoutX="-13.0" layoutY="29.0" maxHeight="30.0" maxWidth="210.0" minHeight="30.0" minWidth="210.0" prefHeight="30.0" prefWidth="210.0" AnchorPane.bottomAnchor="23.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.0" />
                      </children>
                   </AnchorPane>
                </children>
             </GridPane>
             <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
                <children>
-                  <Button alignment="CENTER" layoutX="142.0" layoutY="17.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="116.0" text="Acceder" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="142.0" AnchorPane.rightAnchor="142.0" AnchorPane.topAnchor="17.0" />
+                  <Button fx:id="botonAcceder" alignment="CENTER" layoutX="142.0" layoutY="17.0" mnemonicParsing="false" onAction="#acceder" prefHeight="31.0" prefWidth="116.0" text="Acceder" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="142.0" AnchorPane.rightAnchor="142.0" AnchorPane.topAnchor="17.0" />
                </children>
             </AnchorPane>
          </children>

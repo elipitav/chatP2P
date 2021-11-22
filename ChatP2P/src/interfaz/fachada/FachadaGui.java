@@ -2,7 +2,7 @@ package interfaz.fachada;
 
 import aplicacion.fachada.FachadaAplicacion;
 import interfaz.controladores.Controlador;
-import interfaz.controladores.VPrincipalController;
+import interfaz.controladores.VAccederController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -13,20 +13,21 @@ public class FachadaGui {
     FachadaAplicacion fa;
 
     public FachadaGui(FachadaAplicacion fa) {
+        this.fa=fa;
     }
 
     public void iniciarVista(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(FachadaGui.class.getResource("/interfaz/ventanas/VPrincipal.fxml"));
+        FXMLLoader loader = new FXMLLoader(FachadaGui.class.getResource("/interfaz/ventanas/VAcceder.fxml"));
         Pane root = (Pane) loader.load();
 
         //Collemos o controlador de Acceder
-        VPrincipalController contPrincipal = loader.getController();
-        contPrincipal.setFgui(this);
+        VAccederController contAcceder = loader.getController();
+        contAcceder.setFgui(this);
 
         primaryStage.setTitle("ChatP2P");
         primaryStage.setScene(new Scene(root));
 
-        contPrincipal.setVenta(primaryStage);
+        contAcceder.setVenta(primaryStage);
         //Controlador.setStageIcon(primaryStage);
         primaryStage.show();
 
@@ -34,6 +35,10 @@ public class FachadaGui {
     
     public void enviarMensaje(String mensaje, String receptor){
         fa.enviarMensaje(mensaje,receptor);
+    }
+    
+    public void registrarCliente(String nombre){
+        fa.registrarCliente(nombre);
     }
 
 }

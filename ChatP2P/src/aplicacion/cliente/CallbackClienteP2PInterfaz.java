@@ -9,7 +9,7 @@ package aplicacion.cliente;
  * @author eliseopitavilarino
  */
 
-public interface CallbackClienteP2PInterfaz {
+public interface CallbackClienteP2PInterfaz extends java.rmi.Remote{
     
     //Método para informar a un cliente de que un amigo se ha conectado
     public void amigoConectado(CallbackClienteP2PInterfaz amigo, String nombre) throws java.rmi.RemoteException;
@@ -18,5 +18,5 @@ public interface CallbackClienteP2PInterfaz {
     public void amigoDesconectado(String nombre) throws java.rmi.RemoteException;
     
     //Método para recibir un mensaje
-    public void recibirMensaje(String emisor, String mensaje);
+    public void recibirMensaje(String emisor, String mensaje) throws java.rmi.RemoteException;
 }

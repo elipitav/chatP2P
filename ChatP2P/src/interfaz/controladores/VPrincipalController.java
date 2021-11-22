@@ -59,6 +59,7 @@ public class VPrincipalController extends Controlador implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         botonEnviar.setDisable(true);
+        //fgui.registrarCliente(usuario);
     }    
     
     //Método para tener activado el botón cuando haya texto en el textiField

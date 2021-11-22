@@ -4,9 +4,13 @@
  */
 package aplicacion.cliente;
 
+import aplicacion.servidor.ServidorP2PInterfaz;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -16,15 +20,18 @@ public class CallbackClienteP2PImpl extends UnicastRemoteObject implements Callb
     
     //Nombre del cliente
     private String nombre;
+    //Interfaz del servidor
+    private ServidorP2PInterfaz servidor;
     //Amigos del cliente conectados
     private HashMap<String,CallbackClienteP2PInterfaz> amigos;
     //Chats abiertos
     private HashMap<String, String> chats;
     
     
-    public CallbackClienteP2PImpl(String nombre) throws RemoteException{
+    public CallbackClienteP2PImpl(String nombre, ServidorP2PInterfaz servidor) throws RemoteException{
         super();
         this.nombre = nombre;
+        this.servidor = servidor;
         this.amigos = new HashMap<>();
         this.chats = new HashMap<>();
     }
@@ -33,6 +40,7 @@ public class CallbackClienteP2PImpl extends UnicastRemoteObject implements Callb
     public synchronized void amigoConectado(CallbackClienteP2PInterfaz amigo, String nombre) throws java.rmi.RemoteException {
         
         //Mostrar notificación de amigo conectado
+        System.out.println(nombre+" conectado");
         
         //Añadimos al cliente al hashmap de amigos conectados
         this.amigos.put(nombre,amigo);
@@ -52,7 +60,7 @@ public class CallbackClienteP2PImpl extends UnicastRemoteObject implements Callb
     }
 
     @Override
-    public void recibirMensaje(String emisor, String mensaje) {
+    public void recibirMensaje(String emisor, String mensaje) throws java.rmi.RemoteException{
         //Obtener el mensaje y mostrarlo por pantalla
         
         //Añadimos el mensaje al chat con ese amigo
@@ -61,7 +69,26 @@ public class CallbackClienteP2PImpl extends UnicastRemoteObject implements Callb
     
     public void enviarMensaje(String receptor, String mensaje){
         //Obtenemos la interfaz remota del receptor y la usamos para enviar el mensaje
-        this.amigos.get(receptor).recibirMensaje(this.nombre, mensaje);
+        try{
+            for(Map.Entry<String, CallbackClienteP2PInterfaz> entry : this.amigos.entrySet()) {
+                System.out.println(entry.getKey());
+                System.out.println(entry.getValue());
+            }
+            this.amigos.get(receptor).recibirMensaje(this.nombre, mensaje);
+        }
+        catch(Exception e){
+            System.out.println("Excepcion en el cliente: " + e);
+        }
+        
+    }
+    
+    public void registrarse(){
+        try {
+            this.amigos=this.servidor.registrarCliente(this, nombre);
+            System.out.println("Registered for callback.");
+        } catch (Exception e) {
+            System.out.println("Excepcion en el cliente: " + e);
+        }
     }
     
     

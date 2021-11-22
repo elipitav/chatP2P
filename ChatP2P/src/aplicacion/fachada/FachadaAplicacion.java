@@ -29,14 +29,11 @@ public class FachadaAplicacion extends Application {
     
     private FachadaGui fgui;
     private CallbackClienteP2PImpl cliente;
-    private ServidorP2PInterfaz servidor;
 
     public FachadaAplicacion() {
-        fgui = new interfaz.fachada.FachadaGui(this);
+        fgui = new FachadaGui(this);
         try {
-            //Obtenemos la interfaz remota del servidor
-            servidor = (ServidorP2PInterfaz) Naming.lookup(registryURL);
-            System.out.println("Lookup completed " );
+            
         } catch (Exception e) {
             System.out.println("Excepcion en el cliente: " + e);
         }
@@ -52,8 +49,7 @@ public class FachadaAplicacion extends Application {
 
     @Override
     public void start(Stage stage) {
-        FachadaAplicacion fa;
-        fa = new FachadaAplicacion();
+         FachadaAplicacion fa = new FachadaAplicacion();
         try {
             fa.iniciaInterfazUsuario(stage);
         } catch (Exception ex) {
@@ -63,12 +59,12 @@ public class FachadaAplicacion extends Application {
     
     public void registrarCliente(String nombre){
         try{
+            //Obtenemos la interfaz remota del servidor
+            ServidorP2PInterfaz servidor = (ServidorP2PInterfaz) Naming.lookup(registryURL);
+            System.out.println("Lookup completed");
             //Obtenemos una instancia de la implementación
-            this.cliente = new CallbackClienteP2PImpl(nombre);
-            
-            //Enviamos la interfaz
-            this.servidor.registrarCliente((CallbackClienteP2PInterfaz)this.cliente, nombre);
-            System.out.println("Registered for callback.");
+            this.cliente = new CallbackClienteP2PImpl(nombre, servidor);
+            this.cliente.registrarse();
         }
         catch (Exception e) {
             System.out.println("Excepcion en el cliente: " + e);
