@@ -28,15 +28,15 @@ public class ServidorP2PImpl extends UnicastRemoteObject implements ServidorP2PI
     public synchronized void registrarCliente(CallbackClienteP2PInterfaz cliente, String nombre) throws java.rmi.RemoteException {
 
         if (!clientes.containsKey(nombre)){
-            //Añadimos al cliente al hashmap de clientes conectados
-            clientes.put(nombre, cliente);
-            System.out.println("Nuevo cliente conectado: " + nombre);
-
             //Avisamos a todos los clientes conectados (Todos son amigos)
             for(Map.Entry<String, CallbackClienteP2PInterfaz> entry : this.clientes.entrySet()) {
                 entry.getValue().amigoConectado(cliente, nombre);
                 cliente.amigoConectado(entry.getValue(), entry.getKey());
             }
+            
+            //Añadimos al cliente al hashmap de clientes conectados
+            clientes.put(nombre, cliente);
+            System.out.println("Nuevo cliente conectado: " + nombre);
         }
     }
 

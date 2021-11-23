@@ -11,9 +11,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 
 /**
  * FXML Controller class
@@ -36,6 +38,8 @@ public class VPrincipalController extends Controlador implements Initializable {
 
     public void setReceptor(String receptor) {
         this.receptor = receptor;
+        this.labelReceptor.setText(receptor);
+        
     }
     
     public String getUsuario() {
@@ -52,6 +56,8 @@ public class VPrincipalController extends Controlador implements Initializable {
     private TextField textFieldMensaje;
     @FXML
     private TextArea textAreaChat;
+    @FXML
+    private Label labelReceptor;
 
     /**
      * Initializes the controller class.

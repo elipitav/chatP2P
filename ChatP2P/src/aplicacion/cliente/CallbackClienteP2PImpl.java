@@ -74,11 +74,6 @@ public class CallbackClienteP2PImpl extends UnicastRemoteObject implements Callb
     public void enviarMensaje(String receptor, String mensaje){
         //Obtenemos la interfaz remota del receptor y la usamos para enviar el mensaje
         try{
-            for(Map.Entry<String, CallbackClienteP2PInterfaz> entry : this.amigos.entrySet()) {
-                System.out.println(entry.getKey());
-                System.out.println(entry.getValue());
-            }
-            System.out.println(receptor);
             this.amigos.get(receptor).recibirMensaje(this.nombre, mensaje);
         }
         catch(Exception e){
