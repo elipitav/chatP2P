@@ -51,9 +51,8 @@ public class VAccederController extends Controlador implements Initializable {
         controlador.setUsuario(textFieldNombreUsuario.getText());
         controlador.setVenta(stage);
         controlador.setFgui(fgui);
-        controlador.setReceptor("Manuel");
-        fgui.registrarCliente(textFieldNombreUsuario.getText());
         fgui.setVp(controlador);
+        fgui.registrarCliente(textFieldNombreUsuario.getText());
         
         //Pechase a venta de rexistro
         getVenta().close();

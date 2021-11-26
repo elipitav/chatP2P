@@ -6,6 +6,7 @@ package aplicacion.fachada;
 
 import aplicacion.cliente.CallbackClienteP2PImpl;
 import aplicacion.cliente.CallbackClienteP2PInterfaz;
+import aplicacion.recursos.Amigo;
 import aplicacion.servidor.ServidorP2PInterfaz;
 import interfaz.fachada.FachadaGui;
 import javafx.application.Application;
@@ -18,6 +19,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.util.Collection;
 
 /**
  *
@@ -59,6 +61,7 @@ public class FachadaAplicacion extends Application {
             System.out.println("Lookup completed");
             //Obtenemos una instancia de la implementación
             this.cliente = new CallbackClienteP2PImpl(nombre, servidor,this);
+            //Y nos registramos
             this.cliente.registrarse();
         }
         catch (Exception e) {
@@ -72,7 +75,13 @@ public class FachadaAplicacion extends Application {
     }
     
     public void recibirMensaje(String emisor, String mensaje){
-        fgui.recibirMensaje(emisor, mensaje);
+        //Llamamos a la interfaz para poner el mensaje
+        this.fgui.recibirMensaje(emisor, mensaje);
     }
     
+    //Método para añadir amigo a la tabla
+    public void anadirAmigoTabla(Amigo amigo){
+        //Llamamos a la interfaz
+        this.fgui.anadirAmigoTabla(amigo);
+    }
 }

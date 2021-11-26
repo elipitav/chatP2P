@@ -1,9 +1,11 @@
 package interfaz.fachada;
 
 import aplicacion.fachada.FachadaAplicacion;
+import aplicacion.recursos.Amigo;
 import interfaz.controladores.Controlador;
 import interfaz.controladores.VAccederController;
 import interfaz.controladores.VPrincipalController;
+import java.util.Collection;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -53,6 +55,11 @@ public class FachadaGui {
 
     public void setVp(VPrincipalController vp) {
         this.vp = vp;
+    }
+    
+    //Método para añadir amigo a la tabla
+    public void anadirAmigoTabla(Amigo amigo){
+        this.vp.anadirAmigoTabla(amigo);
     }
 
 }

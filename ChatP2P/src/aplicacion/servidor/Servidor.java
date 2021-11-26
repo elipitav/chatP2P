@@ -71,13 +71,14 @@ public class Servidor {
             System.out.println("Registro RMI creado en el puerto " + RMIPortNum);
         }
     }
+    
     // Este metodo lista los nombres registrados
-  private static void listRegistry(String registryURL)
-     throws RemoteException, MalformedURLException {
-       System.out.println("El registro " + registryURL + " contiene: ");
-       String [ ] names = Naming.list(registryURL);
-       for (int i=0; i < names.length; i++)
-          System.out.println(names[i]);
-  }
+    private static void listRegistry(String registryURL)
+       throws RemoteException, MalformedURLException {
+         System.out.println("El registro " + registryURL + " contiene: ");
+         String [ ] names = Naming.list(registryURL);
+         for (int i=0; i < names.length; i++)
+            System.out.println(names[i]);
+    }
     
 }

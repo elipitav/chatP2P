@@ -4,16 +4,22 @@
  */
 package interfaz.controladores;
 
+import aplicacion.recursos.Amigo;
 import interfaz.fachada.FachadaGui;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
@@ -27,6 +33,12 @@ public class VPrincipalController extends Controlador implements Initializable {
     private FachadaGui fgui;
     private String usuario; //Usuario que hace uso de la aplicación
     private String receptor; //Persona con la que habla el usuario en cada momento
+    @FXML
+    private TableColumn<Amigo, String> colNombre;
+    @FXML
+    private TableColumn<Amigo, String> colEstado;
+    @FXML
+    private TableView<Amigo> tablaAmigos;
 
     public void setFgui(FachadaGui fgui) {
         this.fgui = fgui;
@@ -39,7 +51,6 @@ public class VPrincipalController extends Controlador implements Initializable {
     public void setReceptor(String receptor) {
         this.receptor = receptor;
         this.labelReceptor.setText(receptor);
-        
     }
     
     public String getUsuario() {
@@ -64,9 +75,13 @@ public class VPrincipalController extends Controlador implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        botonEnviar.setDisable(true);
-        //fgui.registrarCliente(usuario);
-    }    
+        this.botonEnviar.setDisable(true);
+        
+        this.colEstado.setCellValueFactory(new PropertyValueFactory<Amigo,String>("estado"));
+        this.colNombre.setCellValueFactory(new PropertyValueFactory<Amigo,String>("nombre"));
+        //ObservableList<Amigo> list = FXCollections.observableArrayList();
+        //this.tablaAmigos.setItems(list);
+    }
     
     //Método para tener activado el botón cuando haya texto en el textiField
     @FXML
@@ -112,6 +127,11 @@ public class VPrincipalController extends Controlador implements Initializable {
             //Añadimos el mensaje al textArea
             textAreaChat.appendText(emisor+": " + mensaje + "\n");
         }
+    }
+    
+    //Método para añadir amigo a la tabla
+    public void anadirAmigoTabla(Amigo amigo){
+        this.tablaAmigos.getItems().add(amigo);
     }
     
 }
