@@ -11,6 +11,7 @@ import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -22,6 +23,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.WindowEvent;
 
 /**
  * FXML Controller class
@@ -74,8 +76,7 @@ public class VPrincipalController extends Controlador implements Initializable {
         
         this.colEstado.setCellValueFactory(new PropertyValueFactory<Amigo,String>("estado"));
         this.colNombre.setCellValueFactory(new PropertyValueFactory<Amigo,String>("nombre"));
-        ObservableList<Amigo> listAmigos = FXCollections.observableArrayList();
-        this.tablaAmigos.setItems(listAmigos);
+        
     }
     
     //Método para tener activado el botón cuando haya texto en el textiField
@@ -121,30 +122,52 @@ public class VPrincipalController extends Controlador implements Initializable {
         //Además comprobamos null por si todavía no estamos hablando con nadie
         if(this.receptor != null){
             if(this.receptor.getNombre().equals(emisor)){
-            //Añadimos el mensaje al textArea
-            textAreaChat.appendText(emisor+": " + mensaje + "\n");
-        }
+                //Añadimos el mensaje al textArea
+                textAreaChat.appendText(emisor+": " + mensaje + "\n");
+            }
         }
     }
     
     //Método para añadir amigo a la tabla
-    public void anadirAmigoTabla(Amigo amigo){
+    public void nuevoAmigo(Amigo amigo){
         this.tablaAmigos.getItems().add(amigo);
+        this.anadirNotificacion(amigo.getNombre()+" conectado");
+    }
+    
+    //Método para indicar que un amigo se ha conectado
+    public void amigoConectado(String amigo){
+        //Actualizamos la tabla
+        this.tablaAmigos.refresh();
+        this.anadirNotificacion(amigo+" conectado");
+    }
+    
+    
+    //Método para indicar que un amigo se ha desconectado
+    public void amigoDesconectado(String nombre){
+        //Actualizamos la tabla
+        this.tablaAmigos.refresh();
+        this.anadirNotificacion(nombre+" desconectado");
     }
     
     //Método para añadir notificaciones
     public void anadirNotificacion(String notificacion){
+        //Añadimos la notificación
         this.textAreaNotificacion.appendText(notificacion+"\n");
     }
 
     @FXML
     private void cambiarAmigo(MouseEvent event) {
-        this.tablaAmigos.refresh();
+        //Cambiamos el receptor, actualizando el chat y la etiqueta con su nombre
         this.receptor = this.tablaAmigos.getItems().get(this.tablaAmigos.getSelectionModel().getFocusedIndex());
         this.textAreaChat.setText(receptor.getChat());
         this.labelReceptor.setText(receptor.getNombre());
         
-        //Lo activamos ya que pasaremos a hablar con alguiebn
-        this.textFieldMensaje.setDisable(false);
+        //Permitimos enviar mensajes si el amigo está en línea
+        if(this.receptor.conectado()){
+            this.textFieldMensaje.setDisable(false);
+        }
+        else{
+            this.textFieldMensaje.setDisable(true);
+        }
     }
 }

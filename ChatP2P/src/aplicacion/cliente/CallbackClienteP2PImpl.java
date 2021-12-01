@@ -9,12 +9,7 @@ import aplicacion.recursos.Amigo;
 import aplicacion.servidor.ServidorP2PInterfaz;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -46,21 +41,27 @@ public class CallbackClienteP2PImpl extends UnicastRemoteObject implements Callb
         //Mostrar notificación de amigo conectado
         this.fa.anadirNotificacion(nombre+" conectado");
         
-        //Añadimos al cliente al hashmap de amigos conectados
-        Amigo amigo = new Amigo(nombre,"En linea",interfaz);
-        this.amigos.put(nombre, amigo);
-        
-        fa.anadirAmigoTabla(amigo);
+        //Añadimos al cliente al hashmap de amigos si no estaba ya. Si lo estaba cambiamos su estado
+        if(this.amigos.containsKey(nombre)){
+            this.amigos.get(nombre).setEstado("En linea");
+            //Indicamos que un amigo se ha conectado para que se informe a la interfaz
+            this.fa.amigoConectado(nombre);
+        }
+        else{
+            Amigo amigo = new Amigo(nombre,"En linea",interfaz);
+            this.amigos.put(nombre, amigo);
+            //Indicamos que un nuevo amigo se ha conectado para que se iforme a la interfaz
+            this.fa.nuevoAmigo(amigo);
+        }
     }
 
     @Override
     public synchronized void amigoDesconectado(String nombre) throws java.rmi.RemoteException {
-        
-       //Mostrar mensaje de amigo desconectado
-       this.fa.anadirNotificacion(nombre+" desconectado");
-        
-       //Eliminamos al cliente del hashmap de amigos conectados
-       this.amigos.remove(nombre);
+       //Indicamos que el usuario está desconectado
+       this.amigos.get(nombre).setEstado("Desconectado");
+       
+       //Indicamos que un amigo se ha desconectado para que se iforme a la interfaz
+       this.fa.amigoDesconectado(nombre);
     }
 
     @Override
@@ -76,11 +77,11 @@ public class CallbackClienteP2PImpl extends UnicastRemoteObject implements Callb
         this.amigos.get(receptor).enviarMensaje(this.nombre,mensaje);
     }
     
-    public void registrarse(){
+    //Método para desconectarse
+    public void desconectar(){
         try {
-            //Llamamos al servidor para registrar al cliente
-            this.servidor.registrarCliente(this, nombre);
-            System.out.println("Registered for callback.");
+            //Informamos al servidor que nos hemos desconectado
+            this.servidor.desconectar(this.nombre);
         } catch (Exception e) {
             System.out.println("Excepcion en el cliente: " + e);
         }

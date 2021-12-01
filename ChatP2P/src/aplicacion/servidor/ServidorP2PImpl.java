@@ -41,7 +41,7 @@ public class ServidorP2PImpl extends UnicastRemoteObject implements ServidorP2PI
     }
 
     @Override
-    public synchronized void eliminarCliente(String nombre) throws java.rmi.RemoteException {
+    public synchronized void desconectar(String nombre) throws java.rmi.RemoteException {
         
         //Eliminamos al cliente del hashmap de clientes conectados
         if (clientes.remove(nombre) != null){

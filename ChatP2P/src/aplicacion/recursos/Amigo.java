@@ -5,7 +5,7 @@
 package aplicacion.recursos;
 
 import aplicacion.cliente.CallbackClienteP2PInterfaz;
-import java.rmi.RemoteException;
+import java.util.Objects;
 
 /**
  *
@@ -58,7 +58,7 @@ public class Amigo {
 
     public void anadirMensaje(String emisor, String mensaje){
         //Añadimos el mensaje al chat
-        this.chat.concat(emisor+": "+mensaje+"\n");
+        this.chat += emisor+": "+mensaje+"\n";
     }
     
     public void enviarMensaje(String emisor, String mensaje){
@@ -71,5 +71,41 @@ public class Amigo {
             System.out.println("Excepcion en el cliente: " + e);
         }
     }
+    
+    public boolean conectado(){
+        if(estado.equals("En linea")){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 19 * hash + Objects.hashCode(this.nombre);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Amigo other = (Amigo) obj;
+        if (!Objects.equals(this.nombre, other.nombre)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
     
 }

@@ -6,7 +6,6 @@ package aplicacion.servidor;
 
 import java.rmi.Remote;
 import aplicacion.cliente.CallbackClienteP2PInterfaz;
-import java.util.HashMap;
 /**
  *
  * @author eliseopitavilarino
@@ -17,6 +16,6 @@ public interface ServidorP2PInterfaz extends Remote {
     public void registrarCliente(CallbackClienteP2PInterfaz cliente, String nombre) throws java.rmi.RemoteException;
     
     //Método a ejecutar cada vez que se desconecte un cliente
-    public void eliminarCliente(String nombre) throws java.rmi.RemoteException;
+    public void desconectar(String nombre) throws java.rmi.RemoteException;
  
 }

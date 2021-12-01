@@ -5,21 +5,13 @@
 package aplicacion.fachada;
 
 import aplicacion.cliente.CallbackClienteP2PImpl;
-import aplicacion.cliente.CallbackClienteP2PInterfaz;
 import aplicacion.recursos.Amigo;
 import aplicacion.servidor.ServidorP2PInterfaz;
 import interfaz.fachada.FachadaGui;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import java.rmi.Naming;
-import java.rmi.RemoteException;
-import java.util.Collection;
 
 /**
  *
@@ -61,8 +53,9 @@ public class FachadaAplicacion extends Application {
             System.out.println("Lookup completed");
             //Obtenemos una instancia de la implementación
             this.cliente = new CallbackClienteP2PImpl(nombre, servidor,this);
-            //Y nos registramos
-            this.cliente.registrarse();
+            //Llamamos al servidor para registrar al cliente
+            servidor.registrarCliente(cliente, nombre);
+            System.out.println("Registered for callback.");
         }
         catch (Exception e) {
             System.out.println("Excepcion en el cliente: " + e);
@@ -75,18 +68,35 @@ public class FachadaAplicacion extends Application {
     }
     
     public void recibirMensaje(String emisor, String mensaje){
-        //Llamamos a la interfaz para poner el mensaje
+        //Llamamos a la interfaz para mostrar el mensaje
         this.fgui.recibirMensaje(emisor, mensaje);
     }
     
     //Método para añadir amigo a la tabla
-    public void anadirAmigoTabla(Amigo amigo){
-        //Llamamos a la interfaz
-        this.fgui.anadirAmigoTabla(amigo);
+    public void nuevoAmigo(Amigo amigo){
+        this.fgui.nuevoAmigo(amigo);
+    }
+    
+    //Método para indicar que un amigo se ha conectado
+    public void amigoConectado(String amigo){
+        //Llamamos a la interfaz para indicar que un amigo se ha conectado
+        this.fgui.amigoConectado(amigo);
+    }
+    
+    //Método para indicar que un amigo se ha desconectado
+    public void amigoDesconectado(String nombre){
+        //Llamamos a la interfaz para indicar que un amigo se ha desconectado
+        this.fgui.amigoDesconectado(nombre);
     }
     
     //Método para añadir una notificacion
     public void anadirNotificacion(String notificacion){
         this.fgui.anadirNotificacion(notificacion);
     }
+    
+    //Método para desconectarse
+    public void desconectar(){
+        this.cliente.desconectar();
+    }
+    
 }

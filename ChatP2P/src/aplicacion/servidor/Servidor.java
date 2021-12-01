@@ -5,10 +5,7 @@ package aplicacion.servidor;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 
-import aplicacion.servidor.ServidorP2PImpl;
-import aplicacion.servidor.ServidorP2PInterfaz;
 import java.rmi.*;
-import java.rmi.server.*;
 import java.rmi.registry.Registry;
 import java.rmi.registry.LocateRegistry;
 import java.net.*;

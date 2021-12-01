@@ -44,30 +44,33 @@ public class VAccederController extends Controlador implements Initializable {
 
     @FXML
     private void acceder(ActionEvent event) {
-        //Creamos unha venta para asignarlla ao controlador
+        //Creamos una ventana
         Stage stage = new Stage(StageStyle.DECORATED);
         
         
-        //Método para cerrar la ventana
+        //Método para cerrar la ventana, momento en el que nos desconectaremos
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
+                fgui.desconectar();
                 System.exit(0);
             }
         });
         
         VPrincipalController controlador = ((VPrincipalController) loadWindow(getClass().getResource("/interfaz/ventanas/VPrincipal.fxml"), "Chat P2P", stage));
 
-        //Asignamoslle o usuario e a venta
+        //Inicializamos la ventana principal
         controlador.setUsuario(textFieldNombreUsuario.getText());
-        controlador.setVenta(stage);
+        controlador.setVentana(stage);
         controlador.setFgui(fgui);
-        controlador.getVenta().setTitle(textFieldNombreUsuario.getText());
+        controlador.getVentana().setTitle(textFieldNombreUsuario.getText());
         fgui.setVp(controlador);
+        
+        //Registramos al cliente
         fgui.registrarCliente(textFieldNombreUsuario.getText());
         
-        //Pechase a venta de rexistro
-        getVenta().close();
+        //Cerramos la ventana de inicio de sesión
+        getVentana().close();
     }
 
     public FachadaGui getFgui() {

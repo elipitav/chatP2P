@@ -31,18 +31,18 @@ public class FachadaGui {
         primaryStage.setTitle("ChatP2P");
         primaryStage.setScene(new Scene(root));
 
-        contAcceder.setVenta(primaryStage);
+        contAcceder.setVentana(primaryStage);
         //Controlador.setStageIcon(primaryStage);
         primaryStage.show();
 
     }
     
-    public void enviarMensaje(String receptor, String mensaje){
-        fa.enviarMensaje(receptor,mensaje);
-    }
-    
     public void registrarCliente(String nombre){
         fa.registrarCliente(nombre);
+    }
+    
+    public void enviarMensaje(String receptor, String mensaje){
+        fa.enviarMensaje(receptor,mensaje);
     }
     
     public void recibirMensaje(String emisor, String mensaje){
@@ -58,13 +58,29 @@ public class FachadaGui {
     }
     
     //Método para añadir amigo a la tabla
-    public void anadirAmigoTabla(Amigo amigo){
-        this.vp.anadirAmigoTabla(amigo);
+    public void nuevoAmigo(Amigo amigo){
+        this.vp.nuevoAmigo(amigo);
+    }
+    
+    //Método para indicar que un amigo se ha conectado
+    public void amigoConectado(String amigo){
+        this.vp.amigoConectado(amigo);
+    }
+    
+    //Método para indicar que un amigo se ha desconectado
+    public void amigoDesconectado(String nombre){
+        //Llamamos a la interfaz para indicar que un amigo se ha desconectado
+        this.vp.amigoDesconectado(nombre);
     }
     
     //Método para añadir una notificación
     public void anadirNotificacion(String notificacion){
         this.vp.anadirNotificacion(notificacion);
+    }
+    
+    //Método para desconectarse
+    public void desconectar(){
+        this.fa.desconectar();
     }
 
 }
