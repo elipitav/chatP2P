@@ -61,5 +61,10 @@ public class FachadaGui {
     public void anadirAmigoTabla(Amigo amigo){
         this.vp.anadirAmigoTabla(amigo);
     }
+    
+    //Método para añadir una notificación
+    public void anadirNotificacion(String notificacion){
+        this.vp.anadirNotificacion(notificacion);
+    }
 
 }

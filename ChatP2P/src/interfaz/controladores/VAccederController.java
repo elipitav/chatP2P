@@ -9,12 +9,14 @@ import interfaz.fachada.FachadaGui;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 
 /**
  * FXML Controller class
@@ -44,13 +46,23 @@ public class VAccederController extends Controlador implements Initializable {
     private void acceder(ActionEvent event) {
         //Creamos unha venta para asignarlla ao controlador
         Stage stage = new Stage(StageStyle.DECORATED);
-
+        
+        
+        //Método para cerrar la ventana
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                System.exit(0);
+            }
+        });
+        
         VPrincipalController controlador = ((VPrincipalController) loadWindow(getClass().getResource("/interfaz/ventanas/VPrincipal.fxml"), "Chat P2P", stage));
 
         //Asignamoslle o usuario e a venta
         controlador.setUsuario(textFieldNombreUsuario.getText());
         controlador.setVenta(stage);
         controlador.setFgui(fgui);
+        controlador.getVenta().setTitle(textFieldNombreUsuario.getText());
         fgui.setVp(controlador);
         fgui.registrarCliente(textFieldNombreUsuario.getText());
         

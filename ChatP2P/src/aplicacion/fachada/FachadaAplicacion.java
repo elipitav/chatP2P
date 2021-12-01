@@ -84,4 +84,9 @@ public class FachadaAplicacion extends Application {
         //Llamamos a la interfaz
         this.fgui.anadirAmigoTabla(amigo);
     }
+    
+    //Método para añadir una notificacion
+    public void anadirNotificacion(String notificacion){
+        this.fgui.anadirNotificacion(notificacion);
+    }
 }

@@ -5,6 +5,7 @@
 package aplicacion.recursos;
 
 import aplicacion.cliente.CallbackClienteP2PInterfaz;
+import java.rmi.RemoteException;
 
 /**
  *
@@ -47,15 +48,24 @@ public class Amigo {
         this.interfaz = interfaz;
     }
 
+    public String getChat() {
+        return chat;
+    }
+
+    public void setChat(String chat) {
+        this.chat = chat;
+    }
+
     public void anadirMensaje(String emisor, String mensaje){
-        //Añadimos el mensaje al textArea
+        //Añadimos el mensaje al chat
         this.chat.concat(emisor+": "+mensaje+"\n");
     }
     
-    public void enviarMensaje(String receptor, String mensaje){
+    public void enviarMensaje(String emisor, String mensaje){
         try{
             //Obtenemos la interfaz remota del amigo y la usamos para enviar el mensaje
-            this.interfaz.recibirMensaje(this.nombre, mensaje);
+            this.anadirMensaje("Yo", mensaje);
+            this.interfaz.recibirMensaje(emisor,mensaje);
         }
         catch(Exception e){
             System.out.println("Excepcion en el cliente: " + e);

@@ -32,25 +32,18 @@ public class VPrincipalController extends Controlador implements Initializable {
     
     private FachadaGui fgui;
     private String usuario; //Usuario que hace uso de la aplicación
-    private String receptor; //Persona con la que habla el usuario en cada momento
+    private Amigo receptor; //Persona con la que habla el usuario en cada momento
     @FXML
     private TableColumn<Amigo, String> colNombre;
     @FXML
     private TableColumn<Amigo, String> colEstado;
     @FXML
     private TableView<Amigo> tablaAmigos;
+    @FXML
+    private TextArea textAreaNotificacion;
 
     public void setFgui(FachadaGui fgui) {
         this.fgui = fgui;
-    }
-
-    public String getReceptor() {
-        return receptor;
-    }
-
-    public void setReceptor(String receptor) {
-        this.receptor = receptor;
-        this.labelReceptor.setText(receptor);
     }
     
     public String getUsuario() {
@@ -76,11 +69,13 @@ public class VPrincipalController extends Controlador implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.botonEnviar.setDisable(true);
+        //Lo desactivamos hasta que se hable con alguien
+        this.textFieldMensaje.setDisable(true);
         
         this.colEstado.setCellValueFactory(new PropertyValueFactory<Amigo,String>("estado"));
         this.colNombre.setCellValueFactory(new PropertyValueFactory<Amigo,String>("nombre"));
-        //ObservableList<Amigo> list = FXCollections.observableArrayList();
-        //this.tablaAmigos.setItems(list);
+        ObservableList<Amigo> listAmigos = FXCollections.observableArrayList();
+        this.tablaAmigos.setItems(listAmigos);
     }
     
     //Método para tener activado el botón cuando haya texto en el textiField
@@ -117,15 +112,18 @@ public class VPrincipalController extends Controlador implements Initializable {
         //Desactivamos el botón
         botonEnviar.setDisable(true);
         //Enviamos el mensaje al receptor
-        fgui.enviarMensaje(receptor,mensaje);
+        fgui.enviarMensaje(receptor.getNombre(),mensaje);
     }
     
     //Método para recibir mensaje
     public void recibirMensaje(String emisor, String mensaje){
         //Solo si el chat actual se corresponde con el del emisor lo mostramos por pantalla
-        if(this.receptor.equals(emisor)){
+        //Además comprobamos null por si todavía no estamos hablando con nadie
+        if(this.receptor != null){
+            if(this.receptor.getNombre().equals(emisor)){
             //Añadimos el mensaje al textArea
             textAreaChat.appendText(emisor+": " + mensaje + "\n");
+        }
         }
     }
     
@@ -134,4 +132,19 @@ public class VPrincipalController extends Controlador implements Initializable {
         this.tablaAmigos.getItems().add(amigo);
     }
     
+    //Método para añadir notificaciones
+    public void anadirNotificacion(String notificacion){
+        this.textAreaNotificacion.appendText(notificacion+"\n");
+    }
+
+    @FXML
+    private void cambiarAmigo(MouseEvent event) {
+        this.tablaAmigos.refresh();
+        this.receptor = this.tablaAmigos.getItems().get(this.tablaAmigos.getSelectionModel().getFocusedIndex());
+        this.textAreaChat.setText(receptor.getChat());
+        this.labelReceptor.setText(receptor.getNombre());
+        
+        //Lo activamos ya que pasaremos a hablar con alguiebn
+        this.textFieldMensaje.setDisable(false);
+    }
 }
