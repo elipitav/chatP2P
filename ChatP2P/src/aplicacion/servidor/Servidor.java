@@ -63,7 +63,7 @@ public class Servidor {
                             // si el registro no existe ya
         }
         catch (RemoteException e) { 
-            //Creamos el registro
+            //Creamos el registro   
             Registry registry = LocateRegistry.createRegistry(RMIPortNum);
             System.out.println("Registro RMI creado en el puerto " + RMIPortNum);
         }

@@ -23,7 +23,8 @@ public class FachadaAplicacion extends Application {
     
     private FachadaGui fgui;
     private CallbackClienteP2PImpl cliente;
-
+    private ServidorP2PInterfaz servidor;
+    
     public FachadaAplicacion() {
         fgui = new FachadaGui(this);
     }    
@@ -46,20 +47,33 @@ public class FachadaAplicacion extends Application {
         }
     }
     
-    public void registrarCliente(String nombre){
+    public String registrarUsuario(String nombre, String contrasena){
+        String mensaje = "";
         try{
             //Obtenemos la interfaz remota del servidor
-            ServidorP2PInterfaz servidor = (ServidorP2PInterfaz) Naming.lookup(registryURL);
+            servidor = (ServidorP2PInterfaz) Naming.lookup(registryURL);
             System.out.println("Lookup completed");
-            //Obtenemos una instancia de la implementación
-            this.cliente = new CallbackClienteP2PImpl(nombre, servidor,this);
-            //Llamamos al servidor para registrar al cliente
-            servidor.registrarCliente(cliente, nombre);
-            System.out.println("Registered for callback.");
+            
+            //Llamamos al servidor para registrar al usuario
+            mensaje = servidor.registrarUsuario(nombre, contrasena);
         }
         catch (Exception e) {
             System.out.println("Excepcion en el cliente: " + e);
         }
+        return mensaje;
+    }
+    
+    public void registrarCliente(String nombre){
+        try{
+            //Obtenemos una instancia de la implementación
+            this.cliente = new CallbackClienteP2PImpl(nombre, this.servidor,this);
+            //Llamamos al servidor para registrar al cliente
+            servidor.registrarCliente(this.cliente, nombre);
+        }
+        catch (Exception e) {
+            System.out.println("Excepcion en el cliente: " + e);
+        }
+        
     }
     
     public void enviarMensaje(String receptor, String mensaje) {

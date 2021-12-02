@@ -37,6 +37,10 @@ public class FachadaGui {
 
     }
     
+    public String registrarUsuario(String nombre, String contrasena){
+        return fa.registrarUsuario(nombre, contrasena);
+    }
+    
     public void registrarCliente(String nombre){
         fa.registrarCliente(nombre);
     }

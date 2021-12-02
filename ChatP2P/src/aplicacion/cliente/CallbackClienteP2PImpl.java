@@ -57,7 +57,7 @@ public class CallbackClienteP2PImpl extends UnicastRemoteObject implements Callb
        //Indicamos que el usuario está desconectado
        this.amigos.get(nombre).setEstado("Desconectado");
        
-       //Indicamos que un amigo se ha desconectado para que se iforme a la interfaz
+       //Indicamos que un amigo se ha desconectado para que se informe a la interfaz
        this.fa.amigoDesconectado(nombre);
     }
 

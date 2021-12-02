@@ -33,8 +33,9 @@ import javafx.stage.WindowEvent;
 public class VPrincipalController extends Controlador implements Initializable {
     
     private FachadaGui fgui;
-    private String usuario; //Usuario que hace uso de la aplicación
-    private Amigo receptor; //Persona con la que habla el usuario en cada momento
+    private String usuario;     //Usuario que hace uso de la aplicación
+    private String contrasena;  //Contraseña del usuario
+    private Amigo receptor;     //Persona con la que habla el usuario en cada momento
     @FXML
     private TableColumn<Amigo, String> colNombre;
     @FXML
@@ -43,6 +44,12 @@ public class VPrincipalController extends Controlador implements Initializable {
     private TableView<Amigo> tablaAmigos;
     @FXML
     private TextArea textAreaNotificacion;
+    @FXML
+    private TextField textFieldModContra;
+    @FXML
+    private Button botonModContra;
+    @FXML
+    private Label labelContraModificada;
 
     public void setFgui(FachadaGui fgui) {
         this.fgui = fgui;
@@ -55,6 +62,16 @@ public class VPrincipalController extends Controlador implements Initializable {
     public void setUsuario(String usuario) {
         this.usuario = usuario;
     }
+
+    public String getContrasena() {
+        return contrasena;
+    }
+
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
+    }
+    
+    
     
     @FXML
     private Button botonEnviar;
@@ -70,9 +87,10 @@ public class VPrincipalController extends Controlador implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        this.botonModContra.setDisable(true);
         this.botonEnviar.setDisable(true);
         //Lo desactivamos hasta que se hable con alguien
-        this.textFieldMensaje.setDisable(true);
+        this.textFieldMensaje.setEditable(false);
         
         this.colEstado.setCellValueFactory(new PropertyValueFactory<Amigo,String>("estado"));
         this.colNombre.setCellValueFactory(new PropertyValueFactory<Amigo,String>("nombre"));
@@ -90,6 +108,17 @@ public class VPrincipalController extends Controlador implements Initializable {
         }
     }
     
+    //Método para tener activado el botón cuando haya texto en el textiField
+    @FXML
+    private void activarBotonModContra(KeyEvent event) {
+        if (this.textFieldModContra.getText().equals("")){
+            this.botonModContra.setDisable(true);
+        }
+        else{
+            this.botonModContra.setDisable(false);
+        }
+    }
+    
     //Método para enviar mensaje pulsando enter
     @FXML
     private void onEnter(ActionEvent event) {
@@ -100,6 +129,26 @@ public class VPrincipalController extends Controlador implements Initializable {
     @FXML
     private void enviarMensajeClick(ActionEvent event) {
         this.enviarMensaje();
+    }
+    
+    //Método para cambiar la contraseña pulsando el botón
+    @FXML
+    private void modContraClick(ActionEvent event) {
+        this.modificarContrasena();
+    }
+    
+    //Método para cambiar la contraseña pulsando enter
+    /*@FXML
+    private void onEnterModContra(ActionEvent event) {
+        this.modificarContrasena();
+    }*/
+    
+    //Método para cambiar la contraseña
+    private void modificarContrasena(){
+        
+        
+        
+        this.textFieldModContra.setText("");
     }
     
     //Método para enviar un mensaje
@@ -139,6 +188,9 @@ public class VPrincipalController extends Controlador implements Initializable {
         //Actualizamos la tabla
         this.tablaAmigos.refresh();
         this.anadirNotificacion(amigo+" conectado");
+        if(amigo.equals(this.receptor.getNombre())){
+            this.textFieldMensaje.setEditable(true);
+        }
     }
     
     
@@ -147,6 +199,9 @@ public class VPrincipalController extends Controlador implements Initializable {
         //Actualizamos la tabla
         this.tablaAmigos.refresh();
         this.anadirNotificacion(nombre+" desconectado");
+        if(nombre.equals(this.receptor.getNombre())){
+            this.textFieldMensaje.setEditable(false);
+        }
     }
     
     //Método para añadir notificaciones
@@ -164,10 +219,10 @@ public class VPrincipalController extends Controlador implements Initializable {
         
         //Permitimos enviar mensajes si el amigo está en línea
         if(this.receptor.conectado()){
-            this.textFieldMensaje.setDisable(false);
+            this.textFieldMensaje.setEditable(true);
         }
         else{
-            this.textFieldMensaje.setDisable(true);
+            this.textFieldMensaje.setEditable(false);
         }
     }
 }

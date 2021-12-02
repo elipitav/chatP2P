@@ -13,7 +13,9 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
@@ -33,44 +35,76 @@ public class VAccederController extends Controlador implements Initializable {
     private TextField textFieldContrasenha;
     @FXML
     private Button botonAcceder;
+    @FXML
+    private Label labelContraIncorrecta;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        this.botonAcceder.setDisable(true);
     }    
 
     @FXML
     private void acceder(ActionEvent event) {
-        //Creamos una ventana
-        Stage stage = new Stage(StageStyle.DECORATED);
         
+        String nombre = textFieldNombreUsuario.getText();
         
-        //Método para cerrar la ventana, momento en el que nos desconectaremos
-        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent event) {
-                fgui.desconectar();
-                System.exit(0);
-            }
-        });
+        //Tratamos de registrar el usuario
+        String mensaje = fgui.registrarUsuario(nombre, textFieldContrasenha.getText());
         
-        VPrincipalController controlador = ((VPrincipalController) loadWindow(getClass().getResource("/interfaz/ventanas/VPrincipal.fxml"), "Chat P2P", stage));
+        if (mensaje.equals("Cliente registrado") || mensaje.equals("Sesion iniciada")) {
+           
+            
+            //Creamos una ventana
+            Stage stage = new Stage(StageStyle.DECORATED);
 
-        //Inicializamos la ventana principal
-        controlador.setUsuario(textFieldNombreUsuario.getText());
-        controlador.setVentana(stage);
-        controlador.setFgui(fgui);
-        controlador.getVentana().setTitle(textFieldNombreUsuario.getText());
-        fgui.setVp(controlador);
+
+            //Método para cerrar la ventana, momento en el que nos desconectaremos
+            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                @Override
+                public void handle(WindowEvent event) {
+                    fgui.desconectar();
+                    System.exit(0);
+                }
+            });
+
+            VPrincipalController controlador = ((VPrincipalController) loadWindow(getClass().getResource("/interfaz/ventanas/VPrincipal.fxml"), "Chat P2P", stage));
+
+            //Inicializamos la ventana principal
+            controlador.setUsuario(textFieldNombreUsuario.getText());
+            controlador.setContrasena(textFieldContrasenha.getText());
+            controlador.setVentana(stage);
+            controlador.setFgui(fgui);
+            controlador.getVentana().setTitle(textFieldNombreUsuario.getText());
+            fgui.setVp(controlador);
+
+            
+            fgui.registrarCliente(nombre);
+
+            //Cerramos la ventana de inicio de sesión
+            getVentana().close();
+            
+            
+            
+        } else {    // Si la contraseña es incorrecta o el usuario ya está conectado desde otro cliente
+            System.out.println(mensaje);
+            this.labelContraIncorrecta.setText(mensaje);
+        }
         
-        //Registramos al cliente
-        fgui.registrarCliente(textFieldNombreUsuario.getText());
         
-        //Cerramos la ventana de inicio de sesión
-        getVentana().close();
+    }
+    
+    //Método para tener activado el botón cuando haya texto en el textiField
+    @FXML
+    private void activarBoton(KeyEvent event) {
+        if (this.textFieldContrasenha.getText().equals("") || this.textFieldNombreUsuario.getText().equals("")){
+            this.botonAcceder.setDisable(true);
+        }
+        else{
+            this.botonAcceder.setDisable(false);
+        }
     }
 
     public FachadaGui getFgui() {

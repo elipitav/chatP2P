@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="464.0" prefWidth="1000.0" styleClass="root" stylesheets="@../css/estiloBase.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interfaz.controladores.VPrincipalController">
+<AnchorPane id="AnchorPane" prefHeight="464.0" prefWidth="1000.0" styleClass="root" stylesheets="@../css/estiloBase.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interfaz.controladores.VPrincipalController">
    <children>
       <GridPane layoutX="34.0" layoutY="14.0" prefHeight="464.0" prefWidth="656.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -128,6 +128,41 @@
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
                               <ListView layoutX="26.0" layoutY="65.0" prefHeight="424.0" prefWidth="251.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
+                  <Tab text="Contraseña">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <GridPane prefHeight="426.0" prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints maxHeight="183.33331298828125" minHeight="0.0" prefHeight="39.66666030883789" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="284.0" minHeight="8.666648864746094" prefHeight="39.66667302449545" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="374.0" minHeight="10.0" prefHeight="337.3333511352539" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                       <children>
+                                          <TextField fx:id="textFieldModContra" layoutX="33.0" layoutY="20.0" onKeyReleased="#activarBotonModContra" prefHeight="30.0" prefWidth="196.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="33.0" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="20.0" />
+                                       </children>
+                                    </AnchorPane>
+                                    <AnchorPane prefHeight="43.0" prefWidth="192.0" GridPane.rowIndex="1">
+                                       <children>
+                                          <Button fx:id="botonModContra" layoutX="37.0" layoutY="18.0" mnemonicParsing="false" onAction="#modContraClick" prefHeight="34.0" prefWidth="190.0" text="Modificar contraseña" AnchorPane.bottomAnchor="-3.0" AnchorPane.leftAnchor="37.0" AnchorPane.rightAnchor="23.0" AnchorPane.topAnchor="18.0" />
+                                       </children>
+                                    </AnchorPane>
+                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
+                                       <children>
+                                          <Label fx:id="labelContraModificada" layoutX="38.0" layoutY="30.0" prefHeight="46.0" prefWidth="185.0" AnchorPane.bottomAnchor="264.0" AnchorPane.leftAnchor="38.0" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="30.0" />
+                                       </children>
+                                    </AnchorPane>
+                                 </children>
+                              </GridPane>
                            </children>
                         </AnchorPane>
                     </content>
