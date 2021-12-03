@@ -18,6 +18,7 @@ public class DAOUsuarios {
     }
     
     public void insertarUsuario(String nombre, String contrasena){
+        //Insertamos el usuario en la base de datos
         String insercion = "INSERT INTO usuarios(nombre, contrasena) values('" + 
                 nombre + "','" + contrasena + "')";
         try (Statement stmt = con.createStatement()) {
@@ -29,6 +30,7 @@ public class DAOUsuarios {
     
     public String obtenerContrasenaUsuario(String usuario){
         String contrasena = "";
+        //Obtenemos la contraseña del usuario en concreto
         String consulta = "select contrasena from usuarios where nombre = '" + usuario + "'";
         try(Statement stmt = con.createStatement()){
             ResultSet rs = stmt.executeQuery(consulta);
@@ -39,6 +41,22 @@ public class DAOUsuarios {
             System.out.println("Error al consultar la contrasena del usuario: " + e.getMessage());
         }
         return contrasena;
+    }
+    
+    public boolean usuarioExiste(String nombre){
+        boolean existe=false;
+        //Intentamos obtener el usuario con el nombre introducido
+        String consulta = "select nombre from usuarios where nombre = '" + nombre + "'";
+        try(Statement stmt = con.createStatement()){
+            ResultSet rs = stmt.executeQuery(consulta);
+            //Si existe alguna tupla indicamos que el usuario ya existe
+            if(rs.next()){
+                existe=true;
+            }
+        } catch (SQLException e){
+            System.out.println("Error al comprobar la existencia del usuario: " + e.getMessage());
+        }
+        return existe;
     }
         
     

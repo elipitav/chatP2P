@@ -41,8 +41,12 @@ public class FachadaGui {
         return fa.registrarUsuario(nombre, contrasena);
     }
     
-    public void registrarCliente(String nombre){
-        fa.registrarCliente(nombre);
+    public String iniciarSesion(String nombre, String contrasena){
+        return fa.iniciarSesion(nombre, contrasena);
+    }
+    
+    public void conectarCliente(String nombre){
+        fa.conectarCliente(nombre);
     }
     
     public void enviarMensaje(String receptor, String mensaje){

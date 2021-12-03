@@ -12,13 +12,15 @@ import aplicacion.cliente.CallbackClienteP2PInterfaz;
  */
 public interface ServidorP2PInterfaz extends Remote {
     
-    //Método a ejecutar para registrar un usuario nuevo en la base de datos, o para comprobar la contraseña
-    //de uno ya existente
+    //Método a ejecutar para registrar un usuario nuevo en la base de datos
     public String registrarUsuario(String nombre, String contrasena) throws java.rmi.RemoteException;
     
-    //Método a ejecutar cada vez que se conecte un nuevo cliente (o uno ya registrado para iniciar sesion)
-    public void registrarCliente(CallbackClienteP2PInterfaz cliente, String nombre) throws java.rmi.RemoteException ;
+    //Método para iniciarSeion
+    public String iniciarSesion(String nombre, String contrasena) throws java.rmi.RemoteException;
     
+    //Método a ejecutar cada vez que se conecte un nuevo cliente (o uno ya registrado para iniciar sesion)
+    public void conectarCliente(CallbackClienteP2PInterfaz cliente, String nombre) throws java.rmi.RemoteException ;
+            
     //Método a ejecutar cada vez que se desconecte un cliente
     public void desconectar(String nombre) throws java.rmi.RemoteException;
  

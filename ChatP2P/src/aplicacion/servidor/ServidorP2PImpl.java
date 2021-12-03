@@ -31,40 +31,46 @@ public class ServidorP2PImpl extends UnicastRemoteObject implements ServidorP2PI
     
     @Override
     public String registrarUsuario(String nombre, String contrasena) throws java.rmi.RemoteException {
-            
-        String contra = fbd.obtenerContrasenaUsuario(nombre);
 
-        //Si la contraseña del usuario es "" quiere decir que el usuario no existía
-        if (contra.equals("")){
-            
-            //Añadimos el usuario nuevo a la base de datos
+        //Comprobamos si el usuario ya existe antes de insertarlo
+        if (!fbd.usuarioExiste(nombre)){
+            //Si no existe, lo añadimos el usuario nuevo a la base de datos
             fbd.insertarUsuario(nombre, contrasena);
             
             System.out.println("Nuevo cliente registrado: " + nombre + ". Su contraseña es: " + contrasena);
             
             return "Cliente registrado";
-            
-        } else { // En caso de que ya estuviese registrado, tratamos de iniciar la sesión
-            
-            if (contra.equals(contrasena)) {
-                if(clientesConectados.containsKey(nombre)){
-                    System.out.println("Usuario ya conectado");
-                    return "Usuario ya conectado";
-                } else {
-                                                            
-                    System.out.println("Sesion iniciada");
-                    return "Sesion iniciada";
-                }
-            }
-            else {
-                System.out.println("Error en inicio de sesion: contrasena incorrecta");
-                return "Contrasena incorrecta";
-            }
+        } else {
+            return "El usuario ya existe";
         }
     }
     
     @Override
-    public synchronized void registrarCliente(CallbackClienteP2PInterfaz cliente, String nombre) throws java.rmi.RemoteException {
+    public String iniciarSesion(String nombre, String contrasena) {
+        //Comprobamos si el usuario existe
+        if(!fbd.usuarioExiste(nombre)){
+            return "El usuario no existe";
+        }
+        //Obtenemos la contraseña
+        String contra = fbd.obtenerContrasenaUsuario(nombre);
+        //Comprobamos si coincide
+        if (contra.equals(contrasena)) {
+            //Y comprobamos si el usuario está ya conectado
+            if (clientesConectados.containsKey(nombre)) {
+                System.out.println("Usuario ya conectado");
+                return "Usuario ya conectado";
+            } else {
+                System.out.println("Sesión iniciada");
+                return "Sesión iniciada";
+            }
+        } else {
+            System.out.println("Error en inicio de sesión: contraseña incorrecta");
+            return "Contraseña incorrecta";
+        }
+    }
+    
+    @Override
+    public synchronized void conectarCliente(CallbackClienteP2PInterfaz cliente, String nombre) throws java.rmi.RemoteException {
         //Avisamos a todos los clientes conectados (Todos son amigos)
         for(Map.Entry<String, CallbackClienteP2PInterfaz> entry : this.clientesConectados.entrySet()) {
             entry.getValue().amigoConectado(cliente, nombre);
@@ -86,7 +92,7 @@ public class ServidorP2PImpl extends UnicastRemoteObject implements ServidorP2PI
                 entry.getValue().amigoDesconectado(nombre);
             }
         } else{
-            System.out.println("Error en desconexion: el cliente " + nombre + "no estaba conectado");
+            System.out.println("Error en desconexión: el cliente " + nombre + "no estaba conectado");
         }        
         
     }   

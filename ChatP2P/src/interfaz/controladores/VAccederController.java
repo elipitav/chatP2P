@@ -37,6 +37,14 @@ public class VAccederController extends Controlador implements Initializable {
     private Button botonAcceder;
     @FXML
     private Label labelContraIncorrecta;
+    @FXML
+    private TextField textFieldNombreRegistro;
+    @FXML
+    private TextField textFieldContrasenaRegistro;
+    @FXML
+    private Button botonRegistro;
+    @FXML
+    private Label labelRegistroIncorrecto;
 
     /**
      * Initializes the controller class.
@@ -45,18 +53,19 @@ public class VAccederController extends Controlador implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         this.botonAcceder.setDisable(true);
     }    
-
+    
+    //Método para iniciar sesión
     @FXML
     private void acceder(ActionEvent event) {
         
         String nombre = textFieldNombreUsuario.getText();
+        String contrasena = textFieldContrasenha.getText();
         
-        //Tratamos de registrar el usuario
-        String mensaje = fgui.registrarUsuario(nombre, textFieldContrasenha.getText());
+        //Tratamos de iniciar sesión con los datos introducidos
+        String mensaje = fgui.iniciarSesion(nombre, contrasena);
         
-        if (mensaje.equals("Cliente registrado") || mensaje.equals("Sesion iniciada")) {
+        if (mensaje.equals("Sesión iniciada")) {
            
-            
             //Creamos una ventana
             Stage stage = new Stage(StageStyle.DECORATED);
 
@@ -73,27 +82,69 @@ public class VAccederController extends Controlador implements Initializable {
             VPrincipalController controlador = ((VPrincipalController) loadWindow(getClass().getResource("/interfaz/ventanas/VPrincipal.fxml"), "Chat P2P", stage));
 
             //Inicializamos la ventana principal
-            controlador.setUsuario(textFieldNombreUsuario.getText());
-            controlador.setContrasena(textFieldContrasenha.getText());
+            controlador.setUsuario(nombre);
+            controlador.setContrasena(contrasena);
             controlador.setVentana(stage);
             controlador.setFgui(fgui);
-            controlador.getVentana().setTitle(textFieldNombreUsuario.getText());
+            controlador.getVentana().setTitle(nombre);
             fgui.setVp(controlador);
 
-            
-            fgui.registrarCliente(nombre);
+            //Conectamos el ciente
+            fgui.conectarCliente(nombre);
 
             //Cerramos la ventana de inicio de sesión
             getVentana().close();
             
-            
-            
-        } else {    // Si la contraseña es incorrecta o el usuario ya está conectado desde otro cliente
+        } else { //Si la contraseña es incorrecta, el usuario ya está conectado o no existe
             System.out.println(mensaje);
             this.labelContraIncorrecta.setText(mensaje);
         }
         
         
+    }
+    
+    //Método para registrar un usuario
+    @FXML
+    private void registrar(ActionEvent event) {
+        String nombre = textFieldNombreRegistro.getText();
+        String contrasena = textFieldContrasenaRegistro.getText();
+        
+        //Tratamos de registrar el usuario
+        String mensaje = fgui.registrarUsuario(nombre, contrasena);
+        
+        if(mensaje.equals("El usuario ya existe")){
+            this.labelRegistroIncorrecto.setText(mensaje);
+        }
+        else{
+            //Creamos una ventana
+            Stage stage = new Stage(StageStyle.DECORATED);
+
+
+            //Método para cerrar la ventana, momento en el que nos desconectaremos
+            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                @Override
+                public void handle(WindowEvent event) {
+                    fgui.desconectar();
+                    System.exit(0);
+                }
+            });
+
+            VPrincipalController controlador = ((VPrincipalController) loadWindow(getClass().getResource("/interfaz/ventanas/VPrincipal.fxml"), "Chat P2P", stage));
+
+            //Inicializamos la ventana principal
+            controlador.setUsuario(nombre);
+            controlador.setContrasena(contrasena);
+            controlador.setVentana(stage);
+            controlador.setFgui(fgui);
+            controlador.getVentana().setTitle(nombre);
+            fgui.setVp(controlador);
+
+            //Conectamos el ciente
+            fgui.conectarCliente(nombre);
+
+            //Cerramos la ventana de inicio de sesión
+            getVentana().close();
+        }
     }
     
     //Método para tener activado el botón cuando haya texto en el textiField

@@ -55,6 +55,10 @@ public class FachadaBD {
         return this.du.obtenerContrasenaUsuario(usuario);
     }
     
+    public boolean usuarioExiste(String nombre){
+        return this.du.usuarioExiste(nombre);
+    }
+    
     
     
 }
