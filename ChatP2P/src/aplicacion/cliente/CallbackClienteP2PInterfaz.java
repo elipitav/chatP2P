@@ -4,12 +4,17 @@
  */
 package aplicacion.cliente;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author eliseopitavilarino
  */
 
 public interface CallbackClienteP2PInterfaz extends java.rmi.Remote{
+    
+    //Método para recibir la lista de amigos
+    public void recibirListaAmigos(ArrayList<String> amigos) throws java.rmi.RemoteException;
     
     //Método para informar a un cliente de que un amigo se ha conectado
     public void amigoConectado(CallbackClienteP2PInterfaz amigo, String nombre) throws java.rmi.RemoteException;

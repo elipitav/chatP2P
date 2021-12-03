@@ -4,6 +4,7 @@
  */
 package bd.DAO;
 import java.sql.*;
+import java.util.ArrayList;
 
 /**
  *
@@ -17,6 +18,20 @@ public class DAOAmistades {
         this.con = con;
     }
     
+    public ArrayList<String> obtenerAmigos(String nombre){
+        ArrayList<String> amigos = new ArrayList<>();
+        //Obtenemos la contraseña del usuario en concreto
+        String consulta = "select usuario2 from amistades where usuario1 = '" + nombre + "'";
+        try(Statement stmt = con.createStatement()){
+            ResultSet rs = stmt.executeQuery(consulta);
+            while (rs.next()) {
+                amigos.add(rs.getString("usuario2"));
+            }
+        } catch (SQLException e){
+            System.out.println("Error al consultar la contrasena del usuario: " + e.getMessage());
+        }
+        return amigos;
+    }
     
 
     

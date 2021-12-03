@@ -4,6 +4,7 @@ import aplicacion.fachada.FachadaAplicacion;
 import aplicacion.servidor.ServidorP2PImpl;
 import bd.DAO.*;
 import java.sql.*;
+import java.util.ArrayList;
 
 /**
  *
@@ -59,6 +60,9 @@ public class FachadaBD {
         return this.du.usuarioExiste(nombre);
     }
     
+    public ArrayList<String> obtenerAmigos(String nombre){
+        return this.da.obtenerAmigos(nombre);
+    }
     
     
 }

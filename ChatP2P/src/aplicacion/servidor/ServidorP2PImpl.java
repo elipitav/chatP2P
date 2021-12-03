@@ -8,6 +8,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import aplicacion.cliente.CallbackClienteP2PInterfaz;
 import bd.fachada.FachadaBD;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -71,7 +72,10 @@ public class ServidorP2PImpl extends UnicastRemoteObject implements ServidorP2PI
     
     @Override
     public synchronized void conectarCliente(CallbackClienteP2PInterfaz cliente, String nombre) throws java.rmi.RemoteException {
-        //Avisamos a todos los clientes conectados (Todos son amigos)
+        //Obtenemos los amigos del usuario
+        ArrayList<String> amigos = fbd.obtenerAmigos(nombre);
+        cliente.recibirListaAmigos(amigos);
+        
         for(Map.Entry<String, CallbackClienteP2PInterfaz> entry : this.clientesConectados.entrySet()) {
             entry.getValue().amigoConectado(cliente, nombre);
             cliente.amigoConectado(entry.getValue(), entry.getKey());

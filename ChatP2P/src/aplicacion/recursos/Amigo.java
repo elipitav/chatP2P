@@ -17,6 +17,11 @@ public class Amigo {
     private CallbackClienteP2PInterfaz interfaz;
     private String chat;
 
+    public Amigo(String nombre){
+        this.nombre = nombre;
+        this.estado = "Desconectado";
+        this.chat="";
+    }
     public Amigo(String nombre, String estado, CallbackClienteP2PInterfaz interfaz) {
         this.nombre = nombre;
         this.estado = estado;

@@ -9,6 +9,7 @@ import aplicacion.recursos.Amigo;
 import aplicacion.servidor.ServidorP2PInterfaz;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -35,6 +36,19 @@ public class CallbackClienteP2PImpl extends UnicastRemoteObject implements Callb
         this.amigos = new HashMap<>();
     }
 
+    @Override
+    public void recibirListaAmigos(ArrayList<String> amigos) throws RemoteException {
+        try{
+            for(String nombre: amigos){
+                Amigo amigo = new Amigo(nombre);
+                this.amigos.put(nombre, amigo);
+                this.fa.nuevoAmigo(amigo);
+            }
+        } catch(Exception ex){
+            System.out.println("Excepción en el cliente: "+ex.getMessage());
+        }
+    }
+    
     @Override
     public synchronized void amigoConectado(CallbackClienteP2PInterfaz interfaz, String nombre) throws java.rmi.RemoteException {
         
