@@ -110,4 +110,9 @@ public class ServidorP2PImpl extends UnicastRemoteObject implements ServidorP2PI
         
     }   
     
+    @Override
+    public synchronized void modificarContrasena(String usuario, String nuevaContrasena) throws java.rmi.RemoteException{
+        this.fbd.modificarContrasena(usuario, nuevaContrasena);
+    }
+    
 }

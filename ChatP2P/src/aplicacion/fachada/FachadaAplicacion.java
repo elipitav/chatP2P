@@ -12,6 +12,9 @@ import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.stage.Stage;
 import java.rmi.Naming;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -127,6 +130,15 @@ public class FachadaAplicacion extends Application {
     //Método para desconectarse
     public void desconectar(){
         this.cliente.desconectar();
+    }
+    
+    //Método para modificar la contraseña de un usuario
+    public void modificarContrasena(String usuario, String nuevaContrasena){
+        try {
+            this.servidor.modificarContrasena(usuario, nuevaContrasena);
+        } catch (RemoteException ex) {
+            System.out.println("Error al modificar la contraseña: " + ex.getMessage());
+        }
     }
     
 }

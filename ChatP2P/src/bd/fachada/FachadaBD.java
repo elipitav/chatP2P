@@ -64,5 +64,9 @@ public class FachadaBD {
         return this.da.obtenerAmigos(nombre);
     }
     
+    public void modificarContrasena(String usuario, String nuevaContrasena){
+        this.du.modificarContrasena(usuario, nuevaContrasena);
+    }
+    
     
 }

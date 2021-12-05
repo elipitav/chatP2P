@@ -90,5 +90,10 @@ public class FachadaGui {
     public void desconectar(){
         this.fa.desconectar();
     }
+    
+    //Método para modificar la contraseña de un usuario
+    public void modificarContrasena(String usuario, String nuevaContrasena){
+        this.fa.modificarContrasena(usuario, nuevaContrasena);
+    }
 
 }

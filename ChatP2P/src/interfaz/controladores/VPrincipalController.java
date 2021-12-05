@@ -145,9 +145,7 @@ public class VPrincipalController extends Controlador implements Initializable {
     
     //Método para cambiar la contraseña
     private void modificarContrasena(){
-        
-        
-        
+        this.fgui.modificarContrasena(usuario, this.textFieldModContra.getText());
         this.textFieldModContra.setText("");
     }
     

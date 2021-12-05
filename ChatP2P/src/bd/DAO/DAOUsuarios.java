@@ -58,6 +58,16 @@ public class DAOUsuarios {
         }
         return existe;
     }
+    
+    public void modificarContrasena(String usuario, String nuevaContrasena){
+        String actualizacion = "update usuarios set contrasena = '" + nuevaContrasena + 
+                "' where nombre = '" + usuario + "'";
+        try (Statement stmt = con.createStatement()) {
+            stmt.executeUpdate(actualizacion);
+        } catch (SQLException e) {
+            System.out.println("Error al modificar la contraseña: " + e.getMessage());
+        }
+    }
         
     
     
