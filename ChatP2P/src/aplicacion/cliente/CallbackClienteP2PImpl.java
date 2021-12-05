@@ -54,6 +54,7 @@ public class CallbackClienteP2PImpl extends UnicastRemoteObject implements Callb
         //Añadimos al cliente al hashmap de amigos si no estaba ya. Si lo estaba cambiamos su estado
         if(this.amigos.containsKey(nombre)){
             this.amigos.get(nombre).setEstado("En linea");
+            this.amigos.get(nombre).setInterfaz(interfaz);
             //Indicamos que un amigo se ha conectado para que se informe a la interfaz
             this.fa.amigoConectado(nombre);
         }
