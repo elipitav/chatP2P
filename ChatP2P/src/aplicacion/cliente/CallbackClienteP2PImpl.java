@@ -51,7 +51,6 @@ public class CallbackClienteP2PImpl extends UnicastRemoteObject implements Callb
     
     @Override
     public synchronized void amigoConectado(CallbackClienteP2PInterfaz interfaz, String nombre) throws java.rmi.RemoteException {
-        
         //Añadimos al cliente al hashmap de amigos si no estaba ya. Si lo estaba cambiamos su estado
         if(this.amigos.containsKey(nombre)){
             this.amigos.get(nombre).setEstado("En linea");
@@ -61,8 +60,9 @@ public class CallbackClienteP2PImpl extends UnicastRemoteObject implements Callb
         else{
             Amigo amigo = new Amigo(nombre,"En linea",interfaz);
             this.amigos.put(nombre, amigo);
-            //Indicamos que un nuevo amigo se ha conectado para que se iforme a la interfaz
+            //Indicamos que un nuevo amigo se ha conectado para que se informe a la interfaz
             this.fa.nuevoAmigo(amigo);
+            this.fa.amigoConectado(nombre);
         }
     }
 
