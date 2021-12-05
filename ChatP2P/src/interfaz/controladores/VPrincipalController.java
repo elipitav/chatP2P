@@ -7,6 +7,7 @@ package interfaz.controladores;
 import aplicacion.recursos.Amigo;
 import interfaz.fachada.FachadaGui;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -50,6 +52,12 @@ public class VPrincipalController extends Controlador implements Initializable {
     private Button botonModContra;
     @FXML
     private Label labelContraModificada;
+    @FXML
+    private ListView<String> listaUsuarios;
+    @FXML
+    private TextField textFieldBuscar;
+    @FXML
+    private Button botonSolicitud;
 
     public void setFgui(FachadaGui fgui) {
         this.fgui = fgui;
@@ -89,6 +97,7 @@ public class VPrincipalController extends Controlador implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         this.botonModContra.setDisable(true);
         this.botonEnviar.setDisable(true);
+        this.botonSolicitud.setDisable(true);
         //Lo desactivamos hasta que se hable con alguien
         this.textFieldMensaje.setEditable(false);
         
@@ -229,4 +238,36 @@ public class VPrincipalController extends Controlador implements Initializable {
             }
         }
     }
+
+    @FXML
+    private void buscarUsuarios(KeyEvent event) {
+       String cadena = this.textFieldBuscar.getText();
+       ArrayList<String> listaUsuarios = this.fgui.buscarUsuarios(cadena);
+       this.listaUsuarios.getItems().clear();
+       this.botonSolicitud.setDisable(true);
+       //buscarUsuarios devuelve null si la cadena introducida tiene menos de 4 caracteres
+       if(listaUsuarios != null){  
+           for (String u : listaUsuarios){
+               if(!this.usuario.equals(u)){ //Comprobamos que no es él mismo
+                   //System.out.println(u);
+                   this.listaUsuarios.getItems().add(u);
+                   this.listaUsuarios.refresh();
+               }
+           }
+       }
+    }
+
+    @FXML
+    private void enviarSolicitud(ActionEvent event) {
+        this.fgui.enviarSolicitud(this.usuario, this.listaUsuarios.getSelectionModel().getSelectedItem());
+    }
+
+    @FXML
+    private void activarBotonSolicitud(MouseEvent event) {
+        if (this.listaUsuarios.getSelectionModel().getSelectedItem() != null){
+            this.botonSolicitud.setDisable(false);
+        }
+    }
+    
+    
 }

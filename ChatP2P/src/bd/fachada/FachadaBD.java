@@ -68,5 +68,13 @@ public class FachadaBD {
         this.du.modificarContrasena(usuario, nuevaContrasena);
     }
     
+    public ArrayList<String> buscarUsuarios(String cadena){
+        return this.du.buscarUsuarios(cadena);
+    }
+    
+    public void insertarSolicitud(String emisor, String receptor){
+        this.ds.insertarSolicitud(emisor, receptor);
+    }
+    
     
 }

@@ -115,4 +115,17 @@ public class ServidorP2PImpl extends UnicastRemoteObject implements ServidorP2PI
         this.fbd.modificarContrasena(usuario, nuevaContrasena);
     }
     
+    @Override
+    public synchronized ArrayList<String> buscarUsuarios(String cadena) throws java.rmi.RemoteException{
+        return this.fbd.buscarUsuarios(cadena);
+    }
+    
+    
+    @Override
+    public synchronized void enviarSolicitud(String emisor, String receptor) throws java.rmi.RemoteException{
+        this.fbd.insertarSolicitud(emisor, receptor);
+        
+        //Falta toda la parte de avisar al receptor (notificación, actualizar lista de solicitudes...)
+    }
+    
 }

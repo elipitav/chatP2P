@@ -13,6 +13,7 @@ import static javafx.application.Application.launch;
 import javafx.stage.Stage;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -138,6 +139,31 @@ public class FachadaAplicacion extends Application {
             this.servidor.modificarContrasena(usuario, nuevaContrasena);
         } catch (RemoteException ex) {
             System.out.println("Error al modificar la contraseña: " + ex.getMessage());
+        }
+    }
+    
+    //Método para buscar usuarios que coincidan parcialmente con la cadena de caracteres introducida
+    //Devuelve null cuando la cadena es de menos de 4 caracteres
+    public ArrayList<String> buscarUsuarios(String cadena){
+        ArrayList<String> lista = null;
+        //Solo buscaremos cuando la cadena tenga un tamaño suficientemente grande
+        if(cadena.length() >= 4){
+            try {
+                lista = this.servidor.buscarUsuarios(cadena);
+            } catch (RemoteException ex) {
+                System.out.println("Error al buscar usuarios: " + ex.getMessage());
+            }
+        }
+        
+        return lista;
+    }
+    
+    //Método para enviar solicitudes de amistad
+    public void enviarSolicitud(String emisor, String receptor){
+        try{
+            this.servidor.enviarSolicitud(emisor, receptor);
+        } catch (RemoteException ex){
+            System.out.println("Error al enviar la solicitud: " + ex.getMessage());
         }
     }
     

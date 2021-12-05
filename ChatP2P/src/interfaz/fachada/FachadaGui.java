@@ -5,6 +5,7 @@ import aplicacion.recursos.Amigo;
 import interfaz.controladores.Controlador;
 import interfaz.controladores.VAccederController;
 import interfaz.controladores.VPrincipalController;
+import java.util.ArrayList;
 import java.util.Collection;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -94,6 +95,16 @@ public class FachadaGui {
     //Método para modificar la contraseña de un usuario
     public void modificarContrasena(String usuario, String nuevaContrasena){
         this.fa.modificarContrasena(usuario, nuevaContrasena);
+    }
+    
+    //Método para buscar usuarios
+    public ArrayList<String> buscarUsuarios(String cadena){
+        return this.fa.buscarUsuarios(cadena);
+    }
+    
+    //Método para enviar solicitudes de amistad
+    public void enviarSolicitud(String emisor, String receptor){
+        this.fa.enviarSolicitud(emisor, receptor);
     }
 
 }

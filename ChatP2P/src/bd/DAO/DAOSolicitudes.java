@@ -18,5 +18,17 @@ public class DAOSolicitudes {
     }
 
     
+    public void insertarSolicitud(String emisor, String receptor){
+        //Insertamos la solicitud en la base de datos
+        String insercion = "insert into solicitudes(emisor, receptor) values('" + emisor + 
+                "', '" + receptor + "')";
+
+        try (Statement stmt = con.createStatement()) {
+            stmt.executeUpdate(insercion);
+        } catch (SQLException e) {
+            System.out.println("Error al insertar solicitud en la BD: " + e.getMessage());
+        }
+    }
+    
 }
 

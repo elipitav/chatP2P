@@ -4,6 +4,7 @@
  */
 package bd.DAO;
 import java.sql.*;
+import java.util.ArrayList;
 
 /**
  *
@@ -69,6 +70,27 @@ public class DAOUsuarios {
         }
     }
         
+    public ArrayList<String> buscarUsuarios(String cadena){
+        ArrayList<String> lista = null;
+        
+        //Solo buscaremos cuando la cadena tenga un tamaño suficientemente grande
+        //Aunque ya se haga en el cliente, también hacemos aquí la comprobación
+        //para proteger en cierta medida la aplicación 
+        if(cadena.length() >= 4){
+            lista = new ArrayList<>();
+            String consulta = "select nombre from usuarios where nombre like '%" + cadena + "%'";
+            try(Statement stmt = con.createStatement()){
+                ResultSet rs = stmt.executeQuery(consulta);
+                while (rs.next()) {
+                    lista.add(rs.getString("nombre"));
+                }
+            } catch (SQLException e){
+                System.out.println("Error al buscar usuarios: " + e.getMessage());
+            }
+        }
+        
+        return lista;
+    }
     
     
 }

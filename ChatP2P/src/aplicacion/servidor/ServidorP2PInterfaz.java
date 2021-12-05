@@ -6,6 +6,7 @@ package aplicacion.servidor;
 
 import java.rmi.Remote;
 import aplicacion.cliente.CallbackClienteP2PInterfaz;
+import java.util.ArrayList;
 /**
  *
  * @author eliseopitavilarino
@@ -29,5 +30,12 @@ public interface ServidorP2PInterfaz extends Remote {
     
     //Método para modificar la contraseña de un usuario
     public void modificarContrasena(String usuario, String nuevaContrasena) throws java.rmi.RemoteException;
+    
+    //Método para buscar usuarios que coincidan parcialmente con la cadena de caracteres introducida
+    //Devuelve null cuando la cadena es de menos de 4 caracteres
+    public  ArrayList<String> buscarUsuarios(String cadena) throws java.rmi.RemoteException;
+    
+    //Método para enviar una solicitud de amistad
+    public void enviarSolicitud(String emisor, String receptor) throws java.rmi.RemoteException;
  
 }
