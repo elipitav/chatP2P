@@ -216,16 +216,19 @@ public class VPrincipalController extends Controlador implements Initializable {
     @FXML
     private void cambiarAmigo(MouseEvent event) {
         //Cambiamos el receptor, actualizando el chat y la etiqueta con su nombre
-        this.receptor = this.tablaAmigos.getItems().get(this.tablaAmigos.getSelectionModel().getFocusedIndex());
-        this.textAreaChat.setText(receptor.getChat());
-        this.labelReceptor.setText(receptor.getNombre());
-        
-        //Permitimos enviar mensajes si el amigo está en línea
-        if(this.receptor.conectado()){
-            this.textFieldMensaje.setEditable(true);
-        }
-        else{
-            this.textFieldMensaje.setEditable(false);
+        int indice = this.tablaAmigos.getSelectionModel().getFocusedIndex();
+        if (indice != -1){  //Si realmente hay algún amigo seleccionado
+            this.receptor = this.tablaAmigos.getItems().get(indice);
+            this.textAreaChat.setText(receptor.getChat());
+            this.labelReceptor.setText(receptor.getNombre());
+
+            //Permitimos enviar mensajes si el amigo está en línea
+            if(this.receptor.conectado()){
+                this.textFieldMensaje.setEditable(true);
+            }
+            else{
+                this.textFieldMensaje.setEditable(false);
+            }
         }
     }
 }
