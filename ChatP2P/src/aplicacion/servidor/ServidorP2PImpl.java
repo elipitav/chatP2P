@@ -70,6 +70,11 @@ public class ServidorP2PImpl extends UnicastRemoteObject implements ServidorP2PI
         }
     }
     
+    @Override 
+    public synchronized boolean clienteConectado(String nombre) throws java.rmi.RemoteException {
+        return clientesConectados.containsKey(nombre);
+    }
+    
     @Override
     public synchronized void conectarCliente(CallbackClienteP2PInterfaz cliente, String nombre) throws java.rmi.RemoteException {
         //Obtenemos los amigos del usuario
@@ -77,8 +82,12 @@ public class ServidorP2PImpl extends UnicastRemoteObject implements ServidorP2PI
         cliente.recibirListaAmigos(amigos);
         
         for(Map.Entry<String, CallbackClienteP2PInterfaz> entry : this.clientesConectados.entrySet()) {
-            entry.getValue().amigoConectado(cliente, nombre);
-            cliente.amigoConectado(entry.getValue(), entry.getKey());
+            if (amigos.contains(entry.getKey())){
+                entry.getValue().amigoConectado(cliente, nombre);
+                //System.out.println(entry.getKey() + " avisado de que se conecto " + nombre);
+                cliente.amigoConectado(entry.getValue(), entry.getKey());
+                //System.out.println(nombre + " avisado de que estaba conectado " + entry.getKey());
+            }
         }
 
         //Añadimos al cliente al hashmap de clientes conectados

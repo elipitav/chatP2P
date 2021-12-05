@@ -180,7 +180,7 @@ public class VPrincipalController extends Controlador implements Initializable {
     //Método para añadir amigo a la tabla
     public void nuevoAmigo(Amigo amigo){
         this.tablaAmigos.getItems().add(amigo);
-        this.anadirNotificacion(amigo.getNombre()+" conectado");
+        //this.anadirNotificacion(amigo.getNombre()+" conectado"); //Esto sobra creo
     }
     
     //Método para indicar que un amigo se ha conectado
@@ -188,9 +188,12 @@ public class VPrincipalController extends Controlador implements Initializable {
         //Actualizamos la tabla
         this.tablaAmigos.refresh();
         this.anadirNotificacion(amigo+" conectado");
-        if(amigo.equals(this.receptor.getNombre())){
-            this.textFieldMensaje.setEditable(true);
+        if(!(this.receptor == null)){
+            if(amigo.equals(this.receptor.getNombre())){
+                this.textFieldMensaje.setEditable(true);
+            }
         }
+        
     }
     
     
