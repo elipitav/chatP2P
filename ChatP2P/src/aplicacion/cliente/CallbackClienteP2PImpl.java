@@ -95,12 +95,6 @@ public class CallbackClienteP2PImpl extends UnicastRemoteObject implements Callb
     }
     
     @Override
-    //Método para notificar a un cliente
-    public void notificar(String notificacion) throws java.rmi.RemoteException{
-        this.fa.anadirNotificacion(notificacion);
-    }
-    
-    @Override
     public void nuevaSolicitud(String emisor) throws java.rmi.RemoteException{
         this.fa.nuevaSolicitud(emisor);
     }
@@ -118,10 +112,6 @@ public class CallbackClienteP2PImpl extends UnicastRemoteObject implements Callb
         } catch (Exception e) {
             System.out.println("Excepcion en el cliente: " + e);
         }
-    }
-    
-    
-    
-    
+    }    
      
 }

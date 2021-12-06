@@ -70,11 +70,6 @@ public class ServidorP2PImpl extends UnicastRemoteObject implements ServidorP2PI
         }
     }
     
-    @Override 
-    public synchronized boolean clienteConectado(String nombre) throws java.rmi.RemoteException {
-        return clientesConectados.containsKey(nombre);
-    }
-    
     @Override
     public synchronized void conectarCliente(CallbackClienteP2PInterfaz cliente, String nombre) throws java.rmi.RemoteException {
         //Obtenemos los amigos del usuario
@@ -137,8 +132,6 @@ public class ServidorP2PImpl extends UnicastRemoteObject implements ServidorP2PI
         return this.fbd.obtenerSolicitudes(usuarioReceptor);
     }
    
-    
-    
     @Override
     public synchronized boolean enviarSolicitud(String emisor, String receptor) throws java.rmi.RemoteException{
         boolean existe = this.fbd.insertarSolicitud(emisor, receptor);
@@ -147,7 +140,7 @@ public class ServidorP2PImpl extends UnicastRemoteObject implements ServidorP2PI
             //Si el receptor está conectado, le notificamos la solicitud y actualizamos su tabla de solicitudes
             if (this.clientesConectados.keySet().contains(receptor)){
                 this.clientesConectados.get(receptor).nuevaSolicitud(emisor);
-                this.clientesConectados.get(receptor).notificar(emisor + " quiere ser tu amigo");
+                //this.clientesConectados.get(receptor).notificar(emisor + " quiere ser tu amigo");
             }
         }
         
@@ -155,13 +148,12 @@ public class ServidorP2PImpl extends UnicastRemoteObject implements ServidorP2PI
     }
     
     @Override
-    public synchronized void anadirAmistad(String usuario1, String usuario2) throws java.rmi.RemoteException{
+    public synchronized CallbackClienteP2PInterfaz anadirAmistad(String usuario1, String usuario2) throws java.rmi.RemoteException{
         this.fbd.anadirAmistad(usuario1, usuario2);
-    }
-    
-    @Override
-    public CallbackClienteP2PInterfaz obtenerCliente(String nombre) throws java.rmi.RemoteException{
-        return this.clientesConectados.get(nombre);
+        if(this.clientesConectados.containsKey(usuario1)){
+            return this.clientesConectados.get(usuario1);
+        }
+        return null;
     }
     
 }

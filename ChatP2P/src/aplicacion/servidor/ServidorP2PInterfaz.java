@@ -19,9 +19,6 @@ public interface ServidorP2PInterfaz extends Remote {
     //Método para iniciarSeion
     public String iniciarSesion(String nombre, String contrasena) throws java.rmi.RemoteException;
     
-    //Método para saber si un cliente está conectado
-    public boolean clienteConectado(String nombre) throws java.rmi.RemoteException;
-    
     //Método a ejecutar cada vez que se conecte un nuevo cliente (o uno ya registrado para iniciar sesion)
     public void conectarCliente(CallbackClienteP2PInterfaz cliente, String nombre) throws java.rmi.RemoteException ;
             
@@ -44,8 +41,6 @@ public interface ServidorP2PInterfaz extends Remote {
     public ArrayList<String> obtenerSolicitudes(String usuarioReceptor) throws java.rmi.RemoteException;
  
     //Método para aceptar una solicitud de amistad
-    public void anadirAmistad(String usuario1, String usuario2) throws java.rmi.RemoteException;
-    
-    //Método para obtener la referencia remota de otro cliente
-    public CallbackClienteP2PInterfaz obtenerCliente(String nombre) throws java.rmi.RemoteException;
+    //Devuelve la interfaz si está conectado
+    public CallbackClienteP2PInterfaz anadirAmistad(String usuario1, String usuario2) throws java.rmi.RemoteException;
 }

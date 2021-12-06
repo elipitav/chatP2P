@@ -34,7 +34,7 @@ import javafx.stage.WindowEvent;
  * @author eliseopitavilarino
  */
 public class VPrincipalController extends Controlador implements Initializable {
-    
+
     private FachadaGui fgui;
     private String usuario;     //Usuario que hace uso de la aplicación
     private String contrasena;  //Contraseña del usuario
@@ -69,7 +69,7 @@ public class VPrincipalController extends Controlador implements Initializable {
     public void setFgui(FachadaGui fgui) {
         this.fgui = fgui;
     }
-    
+
     public String getUsuario() {
         return usuario;
     }
@@ -85,9 +85,7 @@ public class VPrincipalController extends Controlador implements Initializable {
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
     }
-    
-    
-    
+
     @FXML
     private Button botonEnviar;
     @FXML
@@ -109,52 +107,58 @@ public class VPrincipalController extends Controlador implements Initializable {
         //Lo desactivamos hasta que se hable con alguien
         this.textFieldMensaje.setEditable(false);
         //Iniciamos los valores de la tableview
-        this.colEstado.setCellValueFactory(new PropertyValueFactory<Amigo,String>("estado"));
-        this.colNombre.setCellValueFactory(new PropertyValueFactory<Amigo,String>("nombre"));
+        this.colEstado.setCellValueFactory(new PropertyValueFactory<Amigo, String>("estado"));
+        this.colNombre.setCellValueFactory(new PropertyValueFactory<Amigo, String>("nombre"));
         //this.textFieldModContra.set
-        
+
     }
-    
+
     //Método para tener activado el botón de enviar cuando haya texto en el textiField
     @FXML
     private void activarBoton(KeyEvent event) {
-        if (textFieldMensaje.getText().equals("")){
+        if (textFieldMensaje.getText().equals("")) {
             botonEnviar.setDisable(true);
-        }
-        else{
+        } else {
             botonEnviar.setDisable(false);
         }
     }
     
+    //Método para tener activado el botón de enviar solicitud
+    @FXML
+    private void activarBotonSolicitud(MouseEvent event) {
+        if (this.listaUsuarios.getSelectionModel().getSelectedItem() != null) {
+            this.botonSolicitud.setDisable(false);
+        }
+    }
+
     //Método para tener activado el botón de modificar contraseña cuando haya texto en el textiField
     @FXML
     private void activarBotonModContra(KeyEvent event) {
-        if (this.textFieldModContra.getText().equals("")){
+        if (this.textFieldModContra.getText().equals("")) {
             this.botonModContra.setDisable(true);
-        }
-        else{
+        } else {
             this.botonModContra.setDisable(false);
         }
     }
-    
+
     //Método para enviar mensaje pulsando enter
     @FXML
     private void onEnter(ActionEvent event) {
         this.enviarMensaje();
     }
-    
+
     //Método para enviar mensaje pulsando el botón
     @FXML
     private void enviarMensajeClick(ActionEvent event) {
         this.enviarMensaje();
     }
-    
+
     //Método para cambiar la contraseña pulsando el botón
     @FXML
     private void modContraClick(ActionEvent event) {
         this.modificarContrasena();
     }
-    
+
     //Método para cambiar la contraseña pulsando enter
     /*@FXML
     private void onEnterModContra(ActionEvent event) {
@@ -163,26 +167,26 @@ public class VPrincipalController extends Controlador implements Initializable {
     
     //Método para limpiar la pestaña de cambio de contraseña
     @FXML
-    private void limpiarPestañaContrasena(Event event) {
+    private void limpiarPestanaContrasena(Event event) {
         this.textFieldModContra.clear();
         this.botonModContra.setDisable(true);
         this.labelContraModificada.setText("");
     }
-    
+
     //Método para cambiar la contraseña
-    private void modificarContrasena(){
+    private void modificarContrasena() {
         String nuevaContra = this.textFieldModContra.getText();
         //Pasamos la contraseña para que el servidor pueda comprobar que somos el cliente de verdad
-        String confirmacion = this.fgui.modificarContrasena(usuario, 
+        String confirmacion = this.fgui.modificarContrasena(usuario,
                 nuevaContra, this.contrasena);
         this.labelContraModificada.setText(confirmacion);
         //Si todo va correctamente cambiamos la contraseña de la ventana
-        if(confirmacion.equals("Contraseña modificada con éxito")){
+        if (confirmacion.equals("Contraseña modificada con éxito")) {
             this.contrasena = nuevaContra;
         }
         this.textFieldModContra.setText("");
     }
-    
+
     //Método para enviar un mensaje
     private void enviarMensaje() {
         //Obtenemos el mensaje del textfield
@@ -194,121 +198,125 @@ public class VPrincipalController extends Controlador implements Initializable {
         //Desactivamos el botón
         botonEnviar.setDisable(true);
         //Enviamos el mensaje al receptor
-        fgui.enviarMensaje(receptor.getNombre(),mensaje);
+        fgui.enviarMensaje(receptor.getNombre(), mensaje);
     }
-    
+
     //Método para recibir mensaje
-    public void recibirMensaje(String emisor, String mensaje){
+    public void recibirMensaje(String emisor, String mensaje) {
         //Solo si el chat actual se corresponde con el del emisor lo mostramos por pantalla
         //Además comprobamos null por si todavía no estamos hablando con nadie
-        if(this.receptor != null){
-            if(this.receptor.getNombre().equals(emisor)){
+        if (this.receptor != null) {
+            if (this.receptor.getNombre().equals(emisor)) {
                 //Añadimos el mensaje al textArea
-                textAreaChat.appendText(emisor+": " + mensaje + "\n");
+                textAreaChat.appendText(emisor + ": " + mensaje + "\n");
             }
         }
     }
-    
+
     //Método para añadir amigo a la tabla
-    public void nuevoAmigo(Amigo amigo){
+    public void nuevoAmigo(Amigo amigo) {
         this.tablaAmigos.getItems().add(amigo);
-        //this.anadirNotificacion(amigo.getNombre()+" conectado"); //Esto sobra creo
     }
-    
+
     //Método para indicar que un amigo se ha conectado
-    public void amigoConectado(String amigo){
+    public void amigoConectado(String amigo) {
         //Actualizamos la tabla
         this.tablaAmigos.refresh();
-        this.anadirNotificacion(amigo+" conectado");
-        if(!(this.receptor == null)){
-            if(amigo.equals(this.receptor.getNombre())){
+        this.anadirNotificacion(amigo + " conectado");
+        if (!(this.receptor == null)) {
+            if (amigo.equals(this.receptor.getNombre())) {
                 this.textFieldMensaje.setEditable(true);
             }
         }
-        
+
     }
-    
-    
+
     //Método para indicar que un amigo se ha desconectado
-    public void amigoDesconectado(String nombre){
+    public void amigoDesconectado(String nombre) {
         //Actualizamos la tabla
         this.tablaAmigos.refresh();
-        this.anadirNotificacion(nombre+" desconectado");
-        if(nombre.equals(this.receptor.getNombre())){
-            this.textFieldMensaje.setEditable(false);
+        this.anadirNotificacion(nombre + " desconectado");
+        if (!(this.receptor == null)) {
+            if (nombre.equals(this.receptor.getNombre())) {
+                this.textFieldMensaje.setEditable(false);
+            }
         }
     }
-    
+
     //Método para añadir una solicitud de amistad
-    public void nuevaSolicitud(String emisor){
+    public void nuevaSolicitud(String emisor) {
         this.listaSolicitudes.getItems().add(emisor);
+        this.anadirNotificacion(emisor + " quiere ser tu amigo");
         this.listaSolicitudes.refresh();
     }
-    
+
     //Método para añadir notificaciones
-    public void anadirNotificacion(String notificacion){
+    public void anadirNotificacion(String notificacion) {
         //Añadimos la notificación
-        this.textAreaNotificacion.appendText(notificacion+"\n");
+        this.textAreaNotificacion.appendText(notificacion + "\n");
     }
 
     @FXML
     private void cambiarAmigo(MouseEvent event) {
         //Cambiamos el receptor, actualizando el chat y la etiqueta con su nombre
         int indice = this.tablaAmigos.getSelectionModel().getFocusedIndex();
-        if (indice != -1){  //Si realmente hay algún amigo seleccionado
+        if (indice != -1) {  //Si realmente hay algún amigo seleccionado
             this.receptor = this.tablaAmigos.getItems().get(indice);
             this.textAreaChat.setText(receptor.getChat());
             this.labelReceptor.setText(receptor.getNombre());
 
             //Permitimos enviar mensajes si el amigo está en línea
-            if(this.receptor.conectado()){
+            if (this.receptor.conectado()) {
                 this.textFieldMensaje.setEditable(true);
-            }
-            else{
+            } else {
                 this.textFieldMensaje.setEditable(false);
             }
         }
     }
+    
+    //Método para limpiar la pestaña de envio de solicitudes
+    @FXML
+    private void limpiarPestanaSolicitar(Event event) {
+        this.botonSolicitud.setDisable(true);
+        this.labelSolicitudes.setText("");
+        this.textFieldBuscar.clear();
+        this.listaUsuarios.getItems().clear();
+    }
 
     @FXML
     private void buscarUsuarios(KeyEvent event) {
-       String cadena = this.textFieldBuscar.getText();
-       ArrayList<String> listaUsuarios = this.fgui.buscarUsuarios(cadena);
-       this.listaUsuarios.getItems().clear();
-       this.botonSolicitud.setDisable(true);
-       //buscarUsuarios devuelve null si la cadena introducida tiene menos de 4 caracteres
-       if(listaUsuarios != null){  
-           for (String u : listaUsuarios){
-               if(!this.usuario.equals(u)){ //Comprobamos que no es él mismo
-                   //System.out.println(u);
-                   this.listaUsuarios.getItems().add(u);
-                   this.listaUsuarios.refresh();
-               }
-           }
-       }
+        String cadena = this.textFieldBuscar.getText();
+        ArrayList<String> listaUsuarios = this.fgui.buscarUsuarios(cadena);
+        this.listaUsuarios.getItems().clear();
+        this.botonSolicitud.setDisable(true);
+        //buscarUsuarios devuelve null si la cadena introducida tiene menos de 4 caracteres
+        if (listaUsuarios != null) {
+            for (String u : listaUsuarios) {
+                if (!this.usuario.equals(u)) { //Comprobamos que no es él mismo
+                    //System.out.println(u);
+                    this.listaUsuarios.getItems().add(u);
+                    this.listaUsuarios.refresh();
+                }
+            }
+        }
     }
 
     @FXML
     private void enviarSolicitud(ActionEvent event) {
         //enviarSolicitud devuelve true si ya existía la solicitud
-        boolean existe = this.fgui.enviarSolicitud(this.usuario, this.listaUsuarios.getSelectionModel().getSelectedItem());
-        if (existe){
+        String solicitado = this.listaUsuarios.getSelectionModel().getSelectedItem();
+        boolean existe = this.fgui.enviarSolicitud(this.usuario, solicitado);
+        if (existe) {
             this.labelSolicitudes.setText("Ya enviada previamente");
-        } else{
+        } else {
+            this.anadirNotificacion("Solicitud enviada a "+solicitado);
             this.labelSolicitudes.setText("Solicitud enviada");
         }
-}
-
-    @FXML
-    private void activarBotonSolicitud(MouseEvent event) {
-        if (this.listaUsuarios.getSelectionModel().getSelectedItem() != null){
-            this.botonSolicitud.setDisable(false);
-        }
     }
-    
-    public void actualizarSolicitudes(ArrayList<String> emisores){
+
+    public void actualizarSolicitudes(ArrayList<String> emisores) {
         this.listaSolicitudes.getItems().clear();
-        for(String emisor : emisores){
+        for (String emisor : emisores) {
             this.listaSolicitudes.getItems().add(emisor);
             this.listaSolicitudes.refresh();
         }
@@ -316,14 +324,13 @@ public class VPrincipalController extends Controlador implements Initializable {
 
     @FXML
     private void aceptarSolicitud(ActionEvent event) {
-        if (this.listaSolicitudes.getSelectionModel().getSelectedItem() != null){
+        if (this.listaSolicitudes.getSelectionModel().getSelectedItem() != null) {
             String emisor = this.listaSolicitudes.getSelectionModel().getSelectedItem();
-            
+
             this.fgui.anadirAmistad(emisor);
-            
+
         }
-        
+
     }
-    
-    
+
 }
