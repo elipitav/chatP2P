@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
@@ -61,7 +62,7 @@
                                     </AnchorPane>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                        <children>
-                                          <TextField fx:id="textFieldContrasenha" layoutX="-13.0" layoutY="29.0" maxHeight="30.0" maxWidth="210.0" minHeight="30.0" minWidth="210.0" onKeyReleased="#activarBoton" prefHeight="30.0" prefWidth="210.0" AnchorPane.bottomAnchor="23.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.0" />
+                                          <PasswordField fx:id="textFieldContrasenha" layoutX="-14.0" layoutY="8.0" maxHeight="31.0" maxWidth="241.0" minHeight="26.0" minWidth="210.0" onKeyReleased="#activarBoton" prefHeight="31.0" prefWidth="241.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="8.0" />
                                        </children>
                                     </AnchorPane>
                                  </children>

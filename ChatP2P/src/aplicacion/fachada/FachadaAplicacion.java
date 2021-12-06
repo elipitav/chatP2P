@@ -44,7 +44,7 @@ public class FachadaAplicacion extends Application {
 
     @Override
     public void start(Stage stage) {
-         FachadaAplicacion fa = new FachadaAplicacion();
+        FachadaAplicacion fa = new FachadaAplicacion();
         try {
             fa.iniciaInterfazUsuario(stage);
         } catch (Exception ex) {
@@ -146,11 +146,12 @@ public class FachadaAplicacion extends Application {
     }
     
     //Método para modificar la contraseña de un usuario
-    public void modificarContrasena(String usuario, String nuevaContrasena){
+    public String modificarContrasena(String usuario, String nuevaContrasena, String antiguaContrasena){
         try {
-            this.servidor.modificarContrasena(usuario, nuevaContrasena);
+            return this.servidor.modificarContrasena(usuario, nuevaContrasena, antiguaContrasena);
         } catch (RemoteException ex) {
             System.out.println("Error al modificar la contraseña: " + ex.getMessage());
+            return "Error al modificar la contraseña";
         }
     }
     

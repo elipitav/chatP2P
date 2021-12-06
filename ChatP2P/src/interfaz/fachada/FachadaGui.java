@@ -98,8 +98,8 @@ public class FachadaGui {
     }
     
     //Método para modificar la contraseña de un usuario
-    public void modificarContrasena(String usuario, String nuevaContrasena){
-        this.fa.modificarContrasena(usuario, nuevaContrasena);
+    public String modificarContrasena(String usuario, String nuevaContrasena, String antiguaContrasena){
+        return this.fa.modificarContrasena(usuario, nuevaContrasena, antiguaContrasena);
     }
     
     //Método para buscar usuarios

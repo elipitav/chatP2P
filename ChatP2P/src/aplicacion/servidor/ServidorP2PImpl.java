@@ -81,6 +81,8 @@ public class ServidorP2PImpl extends UnicastRemoteObject implements ServidorP2PI
         ArrayList<String> amigos = fbd.obtenerAmigos(nombre);
         cliente.recibirListaAmigos(amigos);
         
+        //Avisamos a los amigos conectados que el cliente se ha conectado
+        //Y avisamos al nuevo cliente conectado con los amigos conectados
         for(Map.Entry<String, CallbackClienteP2PInterfaz> entry : this.clientesConectados.entrySet()) {
             if (amigos.contains(entry.getKey())){
                 entry.getValue().amigoConectado(cliente, nombre);
@@ -111,8 +113,18 @@ public class ServidorP2PImpl extends UnicastRemoteObject implements ServidorP2PI
     }   
     
     @Override
-    public synchronized void modificarContrasena(String usuario, String nuevaContrasena) throws java.rmi.RemoteException{
-        this.fbd.modificarContrasena(usuario, nuevaContrasena);
+    public synchronized String modificarContrasena(String usuario, String nuevaContrasena, 
+            String antiguaContrasena) throws java.rmi.RemoteException{
+        //Obtenemos la contraseña
+        String contra = fbd.obtenerContrasenaUsuario(usuario);
+        //Y comprobamos que es correcta
+        if(contra.equals(antiguaContrasena)){
+            this.fbd.modificarContrasena(usuario, nuevaContrasena);
+            return "Contraseña modificada con éxito";
+        }
+        else{
+            return "Contraseña antigua incorrecta";
+        }
     }
     
     @Override

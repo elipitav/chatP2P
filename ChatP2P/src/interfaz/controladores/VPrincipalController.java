@@ -12,6 +12,7 @@ import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -101,18 +102,20 @@ public class VPrincipalController extends Controlador implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        //Desactivamos todos los botones hasta que se introduzcan argumentos en los textfield
         this.botonModContra.setDisable(true);
         this.botonEnviar.setDisable(true);
         this.botonSolicitud.setDisable(true);
         //Lo desactivamos hasta que se hable con alguien
         this.textFieldMensaje.setEditable(false);
-        
+        //Iniciamos los valores de la tableview
         this.colEstado.setCellValueFactory(new PropertyValueFactory<Amigo,String>("estado"));
         this.colNombre.setCellValueFactory(new PropertyValueFactory<Amigo,String>("nombre"));
+        //this.textFieldModContra.set
         
     }
     
-    //Método para tener activado el botón cuando haya texto en el textiField
+    //Método para tener activado el botón de enviar cuando haya texto en el textiField
     @FXML
     private void activarBoton(KeyEvent event) {
         if (textFieldMensaje.getText().equals("")){
@@ -123,7 +126,7 @@ public class VPrincipalController extends Controlador implements Initializable {
         }
     }
     
-    //Método para tener activado el botón cuando haya texto en el textiField
+    //Método para tener activado el botón de modificar contraseña cuando haya texto en el textiField
     @FXML
     private void activarBotonModContra(KeyEvent event) {
         if (this.textFieldModContra.getText().equals("")){
@@ -158,9 +161,25 @@ public class VPrincipalController extends Controlador implements Initializable {
         this.modificarContrasena();
     }*/
     
+    //Método para limpiar la pestaña de cambio de contraseña
+    @FXML
+    private void limpiarPestañaContrasena(Event event) {
+        this.textFieldModContra.clear();
+        this.botonModContra.setDisable(true);
+        this.labelContraModificada.setText("");
+    }
+    
     //Método para cambiar la contraseña
     private void modificarContrasena(){
-        this.fgui.modificarContrasena(usuario, this.textFieldModContra.getText());
+        String nuevaContra = this.textFieldModContra.getText();
+        //Pasamos la contraseña para que el servidor pueda comprobar que somos el cliente de verdad
+        String confirmacion = this.fgui.modificarContrasena(usuario, 
+                nuevaContra, this.contrasena);
+        this.labelContraModificada.setText(confirmacion);
+        //Si todo va correctamente cambiamos la contraseña de la ventana
+        if(confirmacion.equals("Contraseña modificada con éxito")){
+            this.contrasena = nuevaContra;
+        }
         this.textFieldModContra.setText("");
     }
     

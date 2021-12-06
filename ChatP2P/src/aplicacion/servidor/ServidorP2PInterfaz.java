@@ -29,7 +29,8 @@ public interface ServidorP2PInterfaz extends Remote {
     public void desconectar(String nombre) throws java.rmi.RemoteException;
     
     //Método para modificar la contraseña de un usuario
-    public void modificarContrasena(String usuario, String nuevaContrasena) throws java.rmi.RemoteException;
+    public String modificarContrasena(String usuario, String nuevaContrasena, 
+            String antiguaContrasena) throws java.rmi.RemoteException;
     
     //Método para buscar usuarios que coincidan parcialmente con la cadena de caracteres introducida
     //Devuelve null cuando la cadena es de menos de 4 caracteres
