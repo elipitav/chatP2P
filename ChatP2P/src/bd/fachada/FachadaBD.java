@@ -72,8 +72,16 @@ public class FachadaBD {
         return this.du.buscarUsuarios(cadena);
     }
     
-    public void insertarSolicitud(String emisor, String receptor){
-        this.ds.insertarSolicitud(emisor, receptor);
+    public boolean insertarSolicitud(String emisor, String receptor){
+        return this.ds.insertarSolicitud(emisor, receptor);
+    }
+    
+    public ArrayList<String> obtenerSolicitudes(String usuarioReceptor){
+        return this.ds.obtenerSolicitudes(usuarioReceptor);
+    }
+    
+    public void anadirAmistad(String usuario1, String usuario2){
+        this.da.anadirAmistad(usuario1, usuario2);
     }
     
     

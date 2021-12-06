@@ -5,6 +5,7 @@
 package aplicacion.fachada;
 
 import aplicacion.cliente.CallbackClienteP2PImpl;
+import aplicacion.cliente.CallbackClienteP2PInterfaz;
 import aplicacion.recursos.Amigo;
 import aplicacion.servidor.ServidorP2PInterfaz;
 import interfaz.fachada.FachadaGui;
@@ -28,7 +29,7 @@ public class FachadaAplicacion extends Application {
     private FachadaGui fgui;
     private CallbackClienteP2PImpl cliente;
     private ServidorP2PInterfaz servidor;
-    
+
     public FachadaAplicacion() {
         fgui = new FachadaGui(this);
     }    
@@ -89,6 +90,12 @@ public class FachadaAplicacion extends Application {
             this.cliente = new CallbackClienteP2PImpl(nombre, this.servidor,this);
             //Llamamos al servidor para registrar al cliente
             servidor.conectarCliente(this.cliente, nombre);
+            ArrayList<String> listaSolicitudes = servidor.obtenerSolicitudes(nombre);
+            if(!listaSolicitudes.isEmpty()){
+                this.actualizarSolicitudes(listaSolicitudes);
+                this.cliente.notificar("Tienes solicitudes pendientes");
+            }
+            
         }
         catch (Exception e) {
             System.out.println("Excepcion en el cliente: " + e);
@@ -123,6 +130,11 @@ public class FachadaAplicacion extends Application {
         this.fgui.amigoDesconectado(nombre);
     }
     
+    //Método para añadir una solicitud de amistad
+    public void nuevaSolicitud(String emisor){
+        this.fgui.nuevaSolicitud(emisor);
+    }
+    
     //Método para añadir una notificacion
     public void anadirNotificacion(String notificacion){
         this.fgui.anadirNotificacion(notificacion);
@@ -146,10 +158,22 @@ public class FachadaAplicacion extends Application {
     //Devuelve null cuando la cadena es de menos de 4 caracteres
     public ArrayList<String> buscarUsuarios(String cadena){
         ArrayList<String> lista = null;
+        ArrayList<String> listaEliminar = new ArrayList<>();
         //Solo buscaremos cuando la cadena tenga un tamaño suficientemente grande
         if(cadena.length() >= 4){
             try {
                 lista = this.servidor.buscarUsuarios(cadena);
+                
+                //Eliminaremos de la búsqueda los que ya son amigos del usuario
+                for (String usuario : lista){
+                    if (this.cliente.getAmigos().keySet().contains(usuario)){
+                        listaEliminar.add(usuario);
+                    }
+                }
+                for (String usuario : listaEliminar){
+                    lista.remove(usuario);
+                }
+                
             } catch (RemoteException ex) {
                 System.out.println("Error al buscar usuarios: " + ex.getMessage());
             }
@@ -159,11 +183,45 @@ public class FachadaAplicacion extends Application {
     }
     
     //Método para enviar solicitudes de amistad
-    public void enviarSolicitud(String emisor, String receptor){
+    //Devuelve true si ya existía la solicitud
+    public boolean enviarSolicitud(String emisor, String receptor){
+        boolean existe = false;
         try{
-            this.servidor.enviarSolicitud(emisor, receptor);
+            existe = this.servidor.enviarSolicitud(emisor, receptor);
         } catch (RemoteException ex){
             System.out.println("Error al enviar la solicitud: " + ex.getMessage());
+        }
+        return existe;
+    }
+    
+    //Método para actualizar la lista de solicitudes pendientes de un usuario
+    public void actualizarSolicitudes(ArrayList<String> emisores){
+        this.fgui.actualizarSolicitudes(emisores);
+    }
+    
+    //Método para añadir una amistad
+    public void anadirAmistad(String emisor){
+        try{
+            this.servidor.anadirAmistad(emisor, this.cliente.getNombre());
+            this.fgui.actualizarSolicitudes(this.servidor.obtenerSolicitudes(this.cliente.getNombre()));
+                  
+            Amigo amigo = new Amigo(emisor);
+            
+            if (this.servidor.clienteConectado(emisor)){
+                amigo.setEstado("En linea");
+                CallbackClienteP2PInterfaz clienteAmigo = this.servidor.obtenerCliente(emisor);
+                amigo.setInterfaz(clienteAmigo);
+                
+                clienteAmigo.amigoConectado(this.cliente, this.cliente.getNombre());
+                
+            }
+            this.cliente.getAmigos().put(emisor, amigo);
+            this.nuevoAmigo(amigo);
+            this.amigoConectado(emisor);
+            
+            
+        } catch (RemoteException ex){
+            System.out.println("Error al aceptar la amistad: " + ex.getMessage());
         }
     }
     

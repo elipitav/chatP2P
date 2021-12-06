@@ -120,12 +120,36 @@ public class ServidorP2PImpl extends UnicastRemoteObject implements ServidorP2PI
         return this.fbd.buscarUsuarios(cadena);
     }
     
+    @Override
+    public synchronized ArrayList<String> obtenerSolicitudes(String usuarioReceptor) throws java.rmi.RemoteException{
+        return this.fbd.obtenerSolicitudes(usuarioReceptor);
+    }
+   
+    
     
     @Override
-    public synchronized void enviarSolicitud(String emisor, String receptor) throws java.rmi.RemoteException{
-        this.fbd.insertarSolicitud(emisor, receptor);
+    public synchronized boolean enviarSolicitud(String emisor, String receptor) throws java.rmi.RemoteException{
+        boolean existe = this.fbd.insertarSolicitud(emisor, receptor);
         
-        //Falta toda la parte de avisar al receptor (notificación, actualizar lista de solicitudes...)
+        if(!existe){
+            //Si el receptor está conectado, le notificamos la solicitud y actualizamos su tabla de solicitudes
+            if (this.clientesConectados.keySet().contains(receptor)){
+                this.clientesConectados.get(receptor).nuevaSolicitud(emisor);
+                this.clientesConectados.get(receptor).notificar(emisor + " quiere ser tu amigo");
+            }
+        }
+        
+        return existe;
+    }
+    
+    @Override
+    public synchronized void anadirAmistad(String usuario1, String usuario2) throws java.rmi.RemoteException{
+        this.fbd.anadirAmistad(usuario1, usuario2);
+    }
+    
+    @Override
+    public CallbackClienteP2PInterfaz obtenerCliente(String nombre) throws java.rmi.RemoteException{
+        return this.clientesConectados.get(nombre);
     }
     
 }

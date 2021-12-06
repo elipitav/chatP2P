@@ -36,6 +36,15 @@ public interface ServidorP2PInterfaz extends Remote {
     public  ArrayList<String> buscarUsuarios(String cadena) throws java.rmi.RemoteException;
     
     //Método para enviar una solicitud de amistad
-    public void enviarSolicitud(String emisor, String receptor) throws java.rmi.RemoteException;
+    //Devuelve true si ya existía la solicitud
+    public boolean enviarSolicitud(String emisor, String receptor) throws java.rmi.RemoteException;
+    
+    //Método para obtener las solicitudes pendientes de un usuario
+    public ArrayList<String> obtenerSolicitudes(String usuarioReceptor) throws java.rmi.RemoteException;
  
+    //Método para aceptar una solicitud de amistad
+    public void anadirAmistad(String usuario1, String usuario2) throws java.rmi.RemoteException;
+    
+    //Método para obtener la referencia remota de otro cliente
+    public CallbackClienteP2PInterfaz obtenerCliente(String nombre) throws java.rmi.RemoteException;
 }

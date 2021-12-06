@@ -24,4 +24,10 @@ public interface CallbackClienteP2PInterfaz extends java.rmi.Remote{
     
     //Método para recibir un mensaje
     public void recibirMensaje(String emisor, String mensaje) throws java.rmi.RemoteException;
+    
+    //Método para notificar a un cliente
+    public void notificar(String notificacion) throws java.rmi.RemoteException;
+
+    //Método para enviar una solicitud de amistad
+    public void nuevaSolicitud(String emisor) throws java.rmi.RemoteException;
 }

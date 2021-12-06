@@ -4,6 +4,7 @@
  */
 package bd.DAO;
 import java.sql.*;
+import java.util.ArrayList;
 
 /**
  *
@@ -18,17 +19,53 @@ public class DAOSolicitudes {
     }
 
     
-    public void insertarSolicitud(String emisor, String receptor){
-        //Insertamos la solicitud en la base de datos
-        String insercion = "insert into solicitudes(emisor, receptor) values('" + emisor + 
-                "', '" + receptor + "')";
-
-        try (Statement stmt = con.createStatement()) {
-            stmt.executeUpdate(insercion);
-        } catch (SQLException e) {
-            System.out.println("Error al insertar solicitud en la BD: " + e.getMessage());
+    public boolean insertarSolicitud(String emisor, String receptor){
+        boolean existe=false;
+        //Primero comprobamos si esa solicitud ya existía
+        String consulta = "select * from solicitudes where emisor = '" + emisor +
+                "' and receptor = '" + receptor + "'";
+        try(Statement stmt = con.createStatement()){
+            ResultSet rs = stmt.executeQuery(consulta);
+            //Si existe alguna tupla indicamos que la solicitud ya existe
+            if(rs.next()){
+                existe=true;
+            }
+        } catch (SQLException e){
+            System.out.println("Error al comprobar la existencia de la solicitud: " + e.getMessage());
         }
+            
+        if(!existe){
+            //Insertamos la solicitud en la base de datos
+            String insercion = "insert into solicitudes(emisor, receptor) values('" + emisor + 
+                    "', '" + receptor + "')";
+
+            try (Statement stmt = con.createStatement()) {
+                stmt.executeUpdate(insercion);
+            } catch (SQLException e) {
+                System.out.println("Error al insertar solicitud en la BD: " + e.getMessage());
+            }
+        }
+        
+        return existe;
     }
+    
+    public ArrayList<String> obtenerSolicitudes(String usuarioReceptor){
+        System.out.println("principio");
+        ArrayList<String> listaEmisores = new ArrayList<>();
+        //Obtenemos la contraseña del usuario en concreto
+        String consulta = "select emisor from solicitudes where receptor = '" + usuarioReceptor + "'";
+        try(Statement stmt = con.createStatement()){
+            ResultSet rs = stmt.executeQuery(consulta);
+            while (rs.next()) {
+                listaEmisores.add(rs.getString("emisor"));
+            }
+        } catch (SQLException e){
+            System.out.println("Error al consultar las solicitudes: " + e.getMessage());
+        }
+        System.out.println("final");
+        return listaEmisores;
+    }
+    
     
 }
 

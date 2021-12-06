@@ -82,6 +82,11 @@ public class FachadaGui {
         this.vp.amigoDesconectado(nombre);
     }
     
+    //Método para añadir una solicitud de amistad
+    public void nuevaSolicitud(String emisor){
+        this.vp.nuevaSolicitud(emisor);
+    }
+    
     //Método para añadir una notificación
     public void anadirNotificacion(String notificacion){
         this.vp.anadirNotificacion(notificacion);
@@ -103,8 +108,18 @@ public class FachadaGui {
     }
     
     //Método para enviar solicitudes de amistad
-    public void enviarSolicitud(String emisor, String receptor){
-        this.fa.enviarSolicitud(emisor, receptor);
+    public boolean enviarSolicitud(String emisor, String receptor){
+        return this.fa.enviarSolicitud(emisor, receptor);
+    }
+    
+    //Método para actualizar la lista de solicitudes pendientes de un usuario
+    public void actualizarSolicitudes(ArrayList<String> emisores){
+        this.vp.actualizarSolicitudes(emisores);
+    }
+    
+    //Método para aceptar una solicitud de amistad
+    public void anadirAmistad(String emisor){
+        this.fa.anadirAmistad(emisor);
     }
 
 }

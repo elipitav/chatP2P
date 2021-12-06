@@ -58,6 +58,12 @@ public class VPrincipalController extends Controlador implements Initializable {
     private TextField textFieldBuscar;
     @FXML
     private Button botonSolicitud;
+    @FXML
+    private ListView<String> listaSolicitudes;
+    @FXML
+    private Label labelSolicitudes;
+    @FXML
+    private Button botonAceptarSolicitud;
 
     public void setFgui(FachadaGui fgui) {
         this.fgui = fgui;
@@ -214,6 +220,12 @@ public class VPrincipalController extends Controlador implements Initializable {
         }
     }
     
+    //Método para añadir una solicitud de amistad
+    public void nuevaSolicitud(String emisor){
+        this.listaSolicitudes.getItems().add(emisor);
+        this.listaSolicitudes.refresh();
+    }
+    
     //Método para añadir notificaciones
     public void anadirNotificacion(String notificacion){
         //Añadimos la notificación
@@ -259,14 +271,39 @@ public class VPrincipalController extends Controlador implements Initializable {
 
     @FXML
     private void enviarSolicitud(ActionEvent event) {
-        this.fgui.enviarSolicitud(this.usuario, this.listaUsuarios.getSelectionModel().getSelectedItem());
-    }
+        //enviarSolicitud devuelve true si ya existía la solicitud
+        boolean existe = this.fgui.enviarSolicitud(this.usuario, this.listaUsuarios.getSelectionModel().getSelectedItem());
+        if (existe){
+            this.labelSolicitudes.setText("Ya enviada previamente");
+        } else{
+            this.labelSolicitudes.setText("Solicitud enviada");
+        }
+}
 
     @FXML
     private void activarBotonSolicitud(MouseEvent event) {
         if (this.listaUsuarios.getSelectionModel().getSelectedItem() != null){
             this.botonSolicitud.setDisable(false);
         }
+    }
+    
+    public void actualizarSolicitudes(ArrayList<String> emisores){
+        this.listaSolicitudes.getItems().clear();
+        for(String emisor : emisores){
+            this.listaSolicitudes.getItems().add(emisor);
+            this.listaSolicitudes.refresh();
+        }
+    }
+
+    @FXML
+    private void aceptarSolicitud(ActionEvent event) {
+        if (this.listaSolicitudes.getSelectionModel().getSelectedItem() != null){
+            String emisor = this.listaSolicitudes.getSelectionModel().getSelectedItem();
+            
+            this.fgui.anadirAmistad(emisor);
+            
+        }
+        
     }
     
     

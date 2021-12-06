@@ -36,6 +36,16 @@ public class CallbackClienteP2PImpl extends UnicastRemoteObject implements Callb
         this.amigos = new HashMap<>();
     }
 
+    public HashMap<String, Amigo> getAmigos() {
+        return amigos;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+    
+    
+
     @Override
     public void recibirListaAmigos(ArrayList<String> amigos) throws RemoteException {
         try{
@@ -84,6 +94,17 @@ public class CallbackClienteP2PImpl extends UnicastRemoteObject implements Callb
         this.amigos.get(emisor).anadirMensaje(emisor, mensaje);
     }
     
+    @Override
+    //Método para notificar a un cliente
+    public void notificar(String notificacion) throws java.rmi.RemoteException{
+        this.fa.anadirNotificacion(notificacion);
+    }
+    
+    @Override
+    public void nuevaSolicitud(String emisor) throws java.rmi.RemoteException{
+        this.fa.nuevaSolicitud(emisor);
+    }
+    
     public void enviarMensaje(String receptor, String mensaje){
         //Enviamos un mensaje al amigo indicado
         this.amigos.get(receptor).enviarMensaje(this.nombre,mensaje);
@@ -98,5 +119,9 @@ public class CallbackClienteP2PImpl extends UnicastRemoteObject implements Callb
             System.out.println("Excepcion en el cliente: " + e);
         }
     }
+    
+    
+    
+    
      
 }
