@@ -97,9 +97,12 @@ public class ServidorP2PImpl extends UnicastRemoteObject implements ServidorP2PI
         //Eliminamos al cliente del hashmap de clientes conectados
         if (clientesConectados.remove(nombre) != null){
             System.out.println("Cliente desconectado: " + nombre);
-            //Avisamos a todos los clientes conectados (Todos son amigos)
-            for(Map.Entry<String, CallbackClienteP2PInterfaz> entry : this.clientesConectados.entrySet()) {
-                entry.getValue().amigoDesconectado(nombre);
+            //Avisamos a todos los amigos conectados
+            ArrayList<String> amigos = fbd.obtenerAmigos(nombre);
+            for(String amigo: amigos){
+                if(this.clientesConectados.containsKey(amigo)){
+                    this.clientesConectados.get(amigo).amigoDesconectado(nombre);
+                }
             }
         } else{
             System.out.println("Error en desconexión: el cliente " + nombre + "no estaba conectado");

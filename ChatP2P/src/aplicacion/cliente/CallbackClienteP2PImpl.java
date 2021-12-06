@@ -79,8 +79,9 @@ public class CallbackClienteP2PImpl extends UnicastRemoteObject implements Callb
 
     @Override
     public synchronized void amigoDesconectado(String nombre) throws java.rmi.RemoteException {
-       //Indicamos que el usuario está desconectado
+       //Indicamos que el usuario está desconectado y quitamos la interfaz remota
        this.amigos.get(nombre).setEstado("Desconectado");
+       this.amigos.get(nombre).setInterfaz(null);
        
        //Indicamos que un amigo se ha desconectado para que se informe a la interfaz
        this.fa.amigoDesconectado(nombre);
