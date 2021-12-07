@@ -15,8 +15,6 @@ import javafx.stage.Stage;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -217,7 +215,9 @@ public class FachadaAplicacion extends Application {
                 amigo.getInterfaz().amigoConectado(this.cliente, this.cliente.getNombre());
                 this.amigoConectado(emisor);
             }
-            this.cliente.getAmigos().put(emisor, amigo);
+            synchronized(this.cliente.getAmigos()){
+                this.cliente.getAmigos().put(emisor, amigo);
+            }
             this.nuevoAmigo(amigo);
 
         } catch (RemoteException ex) {
