@@ -605,11 +605,11 @@ RADIO-BUTTON
     -fx-background-radius: 0;
 }
 .text-area:hover > .scroll-pane {
-    -fx-background-color: -cor-accent;
+    -fx-background-color: cor-accent;
 }
 
 .text-area:hover{
-    -fx-background-color: -cor-accent, derive(white, -80%);
+    -fx-background-color: cor-accent, derive(white, -80%);
 }
 
 .text-area:focused > .scroll-pane {

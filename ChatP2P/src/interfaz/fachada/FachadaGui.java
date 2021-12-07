@@ -121,5 +121,10 @@ public class FachadaGui {
     public void anadirAmistad(String emisor){
         this.fa.anadirAmistad(emisor);
     }
+    
+    //Método para rechazar una solicitud de amistad
+    public void rechazarAmistad(String emisor){
+        this.fa.rechazarAmistad(emisor);
+    }
 
 }

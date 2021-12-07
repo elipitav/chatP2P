@@ -27,4 +27,7 @@ public interface CallbackClienteP2PInterfaz extends java.rmi.Remote{
 
     //Método para enviar una solicitud de amistad
     public void nuevaSolicitud(String emisor) throws java.rmi.RemoteException;
+    
+    //Método para indicar que que se ha rechazado o aceptado una solicitud de amista
+    public void respuestaSolicitud(boolean aceptada, String receptor) throws java.rmi.RemoteException;
 }

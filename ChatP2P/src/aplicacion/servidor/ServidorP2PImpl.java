@@ -38,7 +38,7 @@ public class ServidorP2PImpl extends UnicastRemoteObject implements ServidorP2PI
             //Si no existe, lo añadimos el usuario nuevo a la base de datos
             fbd.insertarUsuario(nombre, contrasena);
             
-            System.out.println("Nuevo cliente registrado: " + nombre + ". Su contraseña es: " + contrasena);
+            System.out.println("Nuevo cliente registrado: " + nombre);
             
             return "Cliente registrado";
         } else {
@@ -81,9 +81,7 @@ public class ServidorP2PImpl extends UnicastRemoteObject implements ServidorP2PI
         for(Map.Entry<String, CallbackClienteP2PInterfaz> entry : this.clientesConectados.entrySet()) {
             if (amigos.contains(entry.getKey())){
                 entry.getValue().amigoConectado(cliente, nombre);
-                //System.out.println(entry.getKey() + " avisado de que se conecto " + nombre);
                 cliente.amigoConectado(entry.getValue(), entry.getKey());
-                //System.out.println(nombre + " avisado de que estaba conectado " + entry.getKey());
             }
         }
 
@@ -143,7 +141,6 @@ public class ServidorP2PImpl extends UnicastRemoteObject implements ServidorP2PI
             //Si el receptor está conectado, le notificamos la solicitud y actualizamos su tabla de solicitudes
             if (this.clientesConectados.keySet().contains(receptor)){
                 this.clientesConectados.get(receptor).nuevaSolicitud(emisor);
-                //this.clientesConectados.get(receptor).notificar(emisor + " quiere ser tu amigo");
             }
         }
         
@@ -158,5 +155,12 @@ public class ServidorP2PImpl extends UnicastRemoteObject implements ServidorP2PI
         }
         return null;
     }
-    
+
+    @Override
+    public void rechazarAmistad(String emisor, String receptor) throws RemoteException {
+        this.fbd.eliminarSolicitud(emisor, receptor);
+        if(this.clientesConectados.containsKey(emisor)){
+            this.clientesConectados.get(emisor).respuestaSolicitud(false, receptor);
+        }
+    }   
 }

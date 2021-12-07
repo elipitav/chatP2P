@@ -84,5 +84,9 @@ public class FachadaBD {
         this.da.anadirAmistad(usuario1, usuario2);
     }
     
+    public void eliminarSolicitud(String emisor, String receptor){
+        this.ds.eliminarSolicitud(emisor, receptor);
+    }
+    
     
 }

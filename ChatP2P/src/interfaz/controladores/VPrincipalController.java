@@ -9,6 +9,7 @@ import interfaz.fachada.FachadaGui;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -65,6 +66,8 @@ public class VPrincipalController extends Controlador implements Initializable {
     private Label labelSolicitudes;
     @FXML
     private Button botonAceptarSolicitud;
+    @FXML
+    private Button botonRechazarSolicitud;
 
     public void setFgui(FachadaGui fgui) {
         this.fgui = fgui;
@@ -122,12 +125,13 @@ public class VPrincipalController extends Controlador implements Initializable {
             botonEnviar.setDisable(false);
         }
     }
-    
+
     //Método para tener activado el botón de enviar solicitud
     @FXML
     private void activarBotonSolicitud(MouseEvent event) {
         if (this.listaUsuarios.getSelectionModel().getSelectedItem() != null) {
             this.botonSolicitud.setDisable(false);
+            this.botonRechazarSolicitud.setDisable(false);
         }
     }
 
@@ -164,7 +168,6 @@ public class VPrincipalController extends Controlador implements Initializable {
     private void onEnterModContra(ActionEvent event) {
         this.modificarContrasena();
     }*/
-    
     //Método para limpiar la pestaña de cambio de contraseña
     @FXML
     private void limpiarPestanaContrasena(Event event) {
@@ -215,48 +218,75 @@ public class VPrincipalController extends Controlador implements Initializable {
 
     //Método para añadir amigo a la tabla
     public void nuevoAmigo(Amigo amigo) {
-        this.tablaAmigos.getItems().add(amigo);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                tablaAmigos.getItems().add(amigo);
+            }
+
+        });
     }
 
     //Método para indicar que un amigo se ha conectado
     public void amigoConectado(String amigo) {
-        //Actualizamos la tabla
-        this.tablaAmigos.refresh();
-        this.anadirNotificacion(amigo + " conectado");
-        if (!(this.receptor == null)) {
-            if (amigo.equals(this.receptor.getNombre())) {
-                this.textFieldMensaje.setEditable(true);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                //Actualizamos la tabla
+                tablaAmigos.refresh();
+                anadirNotificacion(amigo + " conectado");
+                if (!(receptor == null)) {
+                    if (amigo.equals(receptor.getNombre())) {
+                        textFieldMensaje.setEditable(true);
+                    }
+                }
             }
-        }
 
+        });
     }
 
     //Método para indicar que un amigo se ha desconectado
     public void amigoDesconectado(String nombre) {
-        //Actualizamos la tabla
-        this.tablaAmigos.refresh();
-        this.anadirNotificacion(nombre + " desconectado");
-        if (!(this.receptor == null)) {
-            if (nombre.equals(this.receptor.getNombre())) {
-                this.textFieldMensaje.setEditable(false);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                //Actualizamos la tabla
+                tablaAmigos.refresh();
+                anadirNotificacion(nombre + " desconectado");
+                if (!(receptor == null)) {
+                    if (nombre.equals(receptor.getNombre())) {
+                        textFieldMensaje.setEditable(false);
+                    }
+                }
             }
-        }
+        });
     }
 
     //Método para añadir una solicitud de amistad
     public void nuevaSolicitud(String emisor) {
-        this.listaSolicitudes.getItems().add(emisor);
-        this.anadirNotificacion(emisor + " quiere ser tu amigo");
-        this.listaSolicitudes.refresh();
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                listaSolicitudes.getItems().add(emisor);
+                anadirNotificacion(emisor + " quiere ser tu amigo");
+                listaSolicitudes.refresh();
+            }
+        });
     }
 
     //Método para añadir notificaciones
     public void anadirNotificacion(String notificacion) {
-        //Añadimos la notificación
-        this.textAreaNotificacion.appendText(notificacion + "\n");
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                //Añadimos la notificación
+                textAreaNotificacion.appendText(notificacion + "\n");
+            }
+        });
     }
 
     @FXML
+
     private void cambiarAmigo(MouseEvent event) {
         //Cambiamos el receptor, actualizando el chat y la etiqueta con su nombre
         int indice = this.tablaAmigos.getSelectionModel().getFocusedIndex();
@@ -273,7 +303,7 @@ public class VPrincipalController extends Controlador implements Initializable {
             }
         }
     }
-    
+
     //Método para limpiar la pestaña de envio de solicitudes
     @FXML
     private void limpiarPestanaSolicitar(Event event) {
@@ -309,7 +339,7 @@ public class VPrincipalController extends Controlador implements Initializable {
         if (existe) {
             this.labelSolicitudes.setText("Ya enviada previamente");
         } else {
-            this.anadirNotificacion("Solicitud enviada a "+solicitado);
+            this.anadirNotificacion("Solicitud enviada a " + solicitado);
             this.labelSolicitudes.setText("Solicitud enviada");
         }
     }
@@ -326,11 +356,17 @@ public class VPrincipalController extends Controlador implements Initializable {
     private void aceptarSolicitud(ActionEvent event) {
         if (this.listaSolicitudes.getSelectionModel().getSelectedItem() != null) {
             String emisor = this.listaSolicitudes.getSelectionModel().getSelectedItem();
-
             this.fgui.anadirAmistad(emisor);
-
         }
 
+    }
+
+    @FXML
+    private void rechazarSolicitud(ActionEvent event) {
+        if (this.listaSolicitudes.getSelectionModel().getSelectedItem() != null) {
+            String emisor = this.listaSolicitudes.getSelectionModel().getSelectedItem();
+            this.fgui.rechazarAmistad(emisor);
+        }
     }
 
 }

@@ -153,7 +153,27 @@
                                     </AnchorPane>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                                        <children>
-                                          <Button fx:id="botonAceptarSolicitud" layoutX="46.0" layoutY="8.0" mnemonicParsing="false" onAction="#aceptarSolicitud" prefHeight="34.0" prefWidth="158.0" text="Aceptar solicitud" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="46.0" AnchorPane.rightAnchor="46.0" AnchorPane.topAnchor="8.0" />
+                                          <GridPane prefHeight="90.0" prefWidth="251.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <columnConstraints>
+                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                            </rowConstraints>
+                                             <children>
+                                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                                   <children>
+                                                      <Button fx:id="botonAceptarSolicitud" alignment="CENTER" layoutX="8.0" layoutY="4.0" minHeight="20.0" mnemonicParsing="false" onAction="#aceptarSolicitud" prefHeight="32.0" prefWidth="113.0" text="Aceptar" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="4.0" />
+                                                   </children>
+                                                </AnchorPane>
+                                                <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+                                                   <children>
+                                                      <Button fx:id="botonRechazarSolicitud" layoutX="7.0" layoutY="5.0" minHeight="20.0" mnemonicParsing="false" onAction="#rechazarSolicitud" prefHeight="32.0" prefWidth="113.0" text="Rechazar" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                                                   </children>
+                                                </AnchorPane>
+                                             </children>
+                                          </GridPane>
                                        </children>
                                     </AnchorPane>
                                  </children>
@@ -217,7 +237,7 @@
                         </AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: white;" GridPane.rowIndex="1">
                            <children>
-                              <TextArea fx:id="textAreaNotificacion" disable="true" prefHeight="428.0" prefWidth="472.0" scrollTop="2.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <TextArea fx:id="textAreaNotificacion" disable="true" prefHeight="428.0" prefWidth="472.0" scrollTop="2.0" text="&#10;" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </children>
                         </AnchorPane>
                      </children>

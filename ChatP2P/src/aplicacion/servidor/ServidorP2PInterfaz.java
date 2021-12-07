@@ -43,4 +43,7 @@ public interface ServidorP2PInterfaz extends Remote {
     //Método para aceptar una solicitud de amistad
     //Devuelve la interfaz si está conectado
     public CallbackClienteP2PInterfaz anadirAmistad(String usuario1, String usuario2) throws java.rmi.RemoteException;
+    
+    //Método para rechazar una solicitud de amistad
+    public void rechazarAmistad(String emisor, String receptor) throws java.rmi.RemoteException;
 }

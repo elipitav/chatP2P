@@ -104,15 +104,15 @@ public class CallbackClienteP2PImpl extends UnicastRemoteObject implements Callb
         //Enviamos un mensaje al amigo indicado
         this.amigos.get(receptor).enviarMensaje(this.nombre,mensaje);
     }
-    
-    //Método para desconectarse
-    public void desconectar(){
-        try {
-            //Informamos al servidor que nos hemos desconectado
-            this.servidor.desconectar(this.nombre);
-        } catch (Exception e) {
-            System.out.println("Excepcion en el cliente: " + e);
+
+    @Override
+    public void respuestaSolicitud(boolean aceptada, String receptor) throws RemoteException {
+        if(aceptada){
+            this.fa.anadirNotificacion(receptor+" ha aceptado tu solicitud de amistad");
         }
-    }    
+        else{
+            this.fa.anadirNotificacion(receptor+" ha rechazado tu solicitud de amistad");
+        }
+    }
      
 }

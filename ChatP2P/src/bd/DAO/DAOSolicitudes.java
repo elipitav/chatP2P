@@ -50,7 +50,6 @@ public class DAOSolicitudes {
     }
     
     public ArrayList<String> obtenerSolicitudes(String usuarioReceptor){
-        System.out.println("principio");
         ArrayList<String> listaEmisores = new ArrayList<>();
         //Obtenemos la contraseña del usuario en concreto
         String consulta = "select emisor from solicitudes where receptor = '" + usuarioReceptor + "'";
@@ -62,10 +61,20 @@ public class DAOSolicitudes {
         } catch (SQLException e){
             System.out.println("Error al consultar las solicitudes: " + e.getMessage());
         }
-        System.out.println("final");
         return listaEmisores;
     }
     
+    public void eliminarSolicitud(String emisor, String receptor){
+        //Eliminamos las tuplas de la tabla de solicitudes
+        String eliminacion = "delete from solicitudes where emisor = '" + emisor + 
+                "' and receptor = '" + receptor + "' or emisor = '" + receptor + 
+                "' and receptor = '" + emisor + "'";
+        try (Statement stmt = con.createStatement()) {
+            stmt.executeUpdate(eliminacion);
+        } catch (SQLException e) {
+            System.out.println("Error al eliminar las solicitudes: " + e.getMessage());
+        }
+    }
     
 }
 

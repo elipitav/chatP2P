@@ -15,6 +15,8 @@ import javafx.stage.Stage;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -137,7 +139,12 @@ public class FachadaAplicacion extends Application {
 
     //Método para desconectarse
     public void desconectar() {
-        this.cliente.desconectar();
+        try {
+            //Informamos al servidor que nos hemos desconectado
+            this.servidor.desconectar(this.cliente.getNombre());
+        } catch (Exception e) {
+            System.out.println("Excepcion en el cliente: " + e);
+        }
     }
 
     //Método para modificar la contraseña de un usuario
@@ -206,7 +213,8 @@ public class FachadaAplicacion extends Application {
             if (interfaz!=null) {
                 amigo.setEstado("En linea");
                 amigo.setInterfaz(interfaz);
-                interfaz.amigoConectado(this.cliente, this.cliente.getNombre());
+                amigo.getInterfaz().respuestaSolicitud(true, this.cliente.getNombre());
+                amigo.getInterfaz().amigoConectado(this.cliente, this.cliente.getNombre());
                 this.amigoConectado(emisor);
             }
             this.cliente.getAmigos().put(emisor, amigo);
@@ -214,6 +222,16 @@ public class FachadaAplicacion extends Application {
 
         } catch (RemoteException ex) {
             System.out.println("Error al aceptar la amistad: " + ex.getMessage());
+        }
+    }
+    
+    //Método para rechazar una amistad
+    public void rechazarAmistad(String emisor){
+        try {
+            this.servidor.rechazarAmistad(emisor, this.cliente.getNombre());
+            this.fgui.actualizarSolicitudes(this.servidor.obtenerSolicitudes(this.cliente.getNombre()));
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
     }
 
