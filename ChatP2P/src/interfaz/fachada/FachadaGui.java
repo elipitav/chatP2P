@@ -46,8 +46,8 @@ public class FachadaGui {
         return fa.iniciarSesion(nombre, contrasena);
     }
     
-    public void conectarCliente(String nombre){
-        fa.conectarCliente(nombre);
+    public void conectarCliente(String nombre, String contrasena){
+        fa.conectarCliente(nombre, contrasena);
     }
     
     public void enviarMensaje(String receptor, String mensaje){
@@ -94,7 +94,7 @@ public class FachadaGui {
     
     //Método para desconectarse
     public void desconectar(){
-        this.fa.desconectar();
+        this.fa.desconectar(this.vp.getContrasena());
     }
     
     //Método para modificar la contraseña de un usuario
@@ -108,8 +108,8 @@ public class FachadaGui {
     }
     
     //Método para enviar solicitudes de amistad
-    public boolean enviarSolicitud(String emisor, String receptor){
-        return this.fa.enviarSolicitud(emisor, receptor);
+    public boolean enviarSolicitud(String emisor, String receptor, String contrasena){
+        return this.fa.enviarSolicitud(emisor, receptor, contrasena);
     }
     
     //Método para actualizar la lista de solicitudes pendientes de un usuario
@@ -118,13 +118,13 @@ public class FachadaGui {
     }
     
     //Método para aceptar una solicitud de amistad
-    public void anadirAmistad(String emisor){
-        this.fa.anadirAmistad(emisor);
+    public void anadirAmistad(String emisor, String contrasena){
+        this.fa.anadirAmistad(emisor, contrasena);
     }
     
     //Método para rechazar una solicitud de amistad
-    public void rechazarAmistad(String emisor){
-        this.fa.rechazarAmistad(emisor);
+    public void rechazarAmistad(String emisor, String contrasena){
+        this.fa.rechazarAmistad(emisor, contrasena);
     }
 
 }

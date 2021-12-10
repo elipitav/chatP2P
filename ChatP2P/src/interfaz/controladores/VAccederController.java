@@ -90,7 +90,7 @@ public class VAccederController extends Controlador implements Initializable {
             fgui.setVp(controlador);
 
             //Conectamos el ciente
-            fgui.conectarCliente(nombre);
+            fgui.conectarCliente(nombre, contrasena);
 
             //Cerramos la ventana de inicio de sesión
             getVentana().close();
@@ -140,7 +140,7 @@ public class VAccederController extends Controlador implements Initializable {
             fgui.setVp(controlador);
 
             //Conectamos el ciente
-            fgui.conectarCliente(nombre);
+            fgui.conectarCliente(nombre, contrasena);
 
             //Cerramos la ventana de inicio de sesión
             getVentana().close();

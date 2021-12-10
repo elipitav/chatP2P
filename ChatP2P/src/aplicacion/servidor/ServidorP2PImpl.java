@@ -56,13 +56,15 @@ public class ServidorP2PImpl extends UnicastRemoteObject implements ServidorP2PI
         String contra = fbd.obtenerContrasenaUsuario(nombre);
         //Comprobamos si coincide
         if (contra.equals(contrasena)) {
-            //Y comprobamos si el usuario está ya conectado
-            if (clientesConectados.containsKey(nombre)) {
-                System.out.println("Usuario ya conectado");
-                return "Usuario ya conectado";
-            } else {
-                System.out.println("Sesión iniciada");
-                return "Sesión iniciada";
+            synchronized (clientesConectados) {
+                //Y comprobamos si el usuario está ya conectado
+                if (clientesConectados.containsKey(nombre)) {
+                    System.out.println("Usuario ya conectado");
+                    return "Usuario ya conectado";
+                } else {
+                    System.out.println("Sesión iniciada");
+                    return "Sesión iniciada";
+                }
             }
         } else {
             System.out.println("Error en inicio de sesión: contraseña incorrecta");
@@ -71,45 +73,53 @@ public class ServidorP2PImpl extends UnicastRemoteObject implements ServidorP2PI
     }
 
     @Override
-    public void conectarCliente(CallbackClienteP2PInterfaz cliente, String nombre) throws java.rmi.RemoteException {
-        //Obtenemos los amigos del usuario
-        ArrayList<String> amigos = fbd.obtenerAmigos(nombre);
-        cliente.recibirListaAmigos(amigos);
+    public void conectarCliente(CallbackClienteP2PInterfaz cliente, String nombre, String contrasena) throws java.rmi.RemoteException {
+        //Obtenemos la contraseña
+        String contra = fbd.obtenerContrasenaUsuario(nombre);
+        //Comprobamos si coincide
+        if (contra.equals(contrasena)) {
+            //Obtenemos los amigos del usuario
+            ArrayList<String> amigos = fbd.obtenerAmigos(nombre);
+            cliente.recibirListaAmigos(amigos);
 
-        //Avisamos a los amigos conectados que el cliente se ha conectado
-        //Y avisamos al nuevo cliente conectado con los amigos conectados
-        synchronized (this.clientesConectados) {
-            for (Map.Entry<String, CallbackClienteP2PInterfaz> entry : this.clientesConectados.entrySet()) {
-                if (amigos.contains(entry.getKey())) {
-                    entry.getValue().amigoConectado(cliente, nombre);
-                    cliente.amigoConectado(entry.getValue(), entry.getKey());
+            //Avisamos a los amigos conectados que el cliente se ha conectado
+            //Y avisamos al nuevo cliente conectado con los amigos conectados
+            synchronized (this.clientesConectados) {
+                for (Map.Entry<String, CallbackClienteP2PInterfaz> entry : this.clientesConectados.entrySet()) {
+                    if (amigos.contains(entry.getKey())) {
+                        entry.getValue().amigoConectado(cliente, nombre);
+                        cliente.amigoConectado(entry.getValue(), entry.getKey());
+                    }
                 }
-            }
 
-            //Añadimos al cliente al hashmap de clientes conectados
-            clientesConectados.put(nombre, cliente);
+                //Añadimos al cliente al hashmap de clientes conectados
+                clientesConectados.put(nombre, cliente);
+            }
         }
     }
 
     @Override
-    public void desconectar(String nombre) throws java.rmi.RemoteException {
-
-        //Eliminamos al cliente del hashmap de clientes conectados
-        synchronized (this.clientesConectados) {
-            if (clientesConectados.remove(nombre) != null) {
-                System.out.println("Cliente desconectado: " + nombre);
-                //Avisamos a todos los amigos conectados
-                ArrayList<String> amigos = fbd.obtenerAmigos(nombre);
-                for (String amigo : amigos) {
-                    if (this.clientesConectados.containsKey(amigo)) {
-                        this.clientesConectados.get(amigo).amigoDesconectado(nombre);
+    public void desconectar(String nombre, String contrasena) throws java.rmi.RemoteException {
+        //Obtenemos la contraseña
+        String contra = fbd.obtenerContrasenaUsuario(nombre);
+        //Comprobamos si coincide
+        if (contra.equals(contrasena)) {
+            //Eliminamos al cliente del hashmap de clientes conectados
+            synchronized (this.clientesConectados) {
+                if (clientesConectados.remove(nombre) != null) {
+                    System.out.println("Cliente desconectado: " + nombre);
+                    //Avisamos a todos los amigos conectados
+                    ArrayList<String> amigos = fbd.obtenerAmigos(nombre);
+                    for (String amigo : amigos) {
+                        if (this.clientesConectados.containsKey(amigo)) {
+                            this.clientesConectados.get(amigo).amigoDesconectado(nombre);
+                        }
                     }
+                } else {
+                    System.out.println("Error en desconexión: el cliente " + nombre + "no estaba conectado");
                 }
-            } else {
-                System.out.println("Error en desconexión: el cliente " + nombre + "no estaba conectado");
             }
         }
-
     }
 
     @Override
@@ -132,38 +142,67 @@ public class ServidorP2PImpl extends UnicastRemoteObject implements ServidorP2PI
     }
 
     @Override
-    public synchronized ArrayList<String> obtenerSolicitudes(String usuarioReceptor) throws java.rmi.RemoteException {
-        return this.fbd.obtenerSolicitudes(usuarioReceptor);
-    }
-
-    @Override
-    public boolean enviarSolicitud(String emisor, String receptor) throws java.rmi.RemoteException {
-        boolean existe = this.fbd.insertarSolicitud(emisor, receptor);
-
-        if (!existe) {
-            //Si el receptor está conectado, le notificamos la solicitud y actualizamos su tabla de solicitudes
-            if (this.clientesConectados.keySet().contains(receptor)) {
-                this.clientesConectados.get(receptor).nuevaSolicitud(emisor);
-            }
-        }
-
-        return existe;
-    }
-
-    @Override
-    public CallbackClienteP2PInterfaz anadirAmistad(String usuario1, String usuario2) throws java.rmi.RemoteException {
-        this.fbd.anadirAmistad(usuario1, usuario2);
-        if (this.clientesConectados.containsKey(usuario1)) {
-            return this.clientesConectados.get(usuario1);
+    public synchronized ArrayList<String> obtenerSolicitudes(String usuarioReceptor, String contrasena) throws java.rmi.RemoteException {
+        //Obtenemos la contraseña
+        String contra = fbd.obtenerContrasenaUsuario(usuarioReceptor);
+        //Comprobamos si coincide
+        if (contra.equals(contrasena)) {
+            return this.fbd.obtenerSolicitudes(usuarioReceptor);
         }
         return null;
     }
 
     @Override
-    public void rechazarAmistad(String emisor, String receptor) throws RemoteException {
-        this.fbd.eliminarSolicitud(emisor, receptor);
-        if (this.clientesConectados.containsKey(emisor)) {
-            this.clientesConectados.get(emisor).respuestaSolicitud(false, receptor);
+    public boolean enviarSolicitud(String emisor, String receptor, String contrasena) throws java.rmi.RemoteException {
+        //Obtenemos la contraseña
+        String contra = fbd.obtenerContrasenaUsuario(emisor);
+        //Comprobamos si coincide
+        if (contra.equals(contrasena)) {
+            boolean existe = this.fbd.insertarSolicitud(emisor, receptor);
+
+            if (!existe) {
+                synchronized (clientesConectados) {
+                    //Si el receptor está conectado, le notificamos la solicitud y actualizamos su tabla de solicitudes
+                    if (this.clientesConectados.keySet().contains(receptor)) {
+                        this.clientesConectados.get(receptor).nuevaSolicitud(emisor);
+                    }
+                }
+            }
+
+            return existe;
+        }
+        return false;
+    }
+
+    @Override
+    public CallbackClienteP2PInterfaz anadirAmistad(String emisor, String receptor, String contrasena) throws java.rmi.RemoteException {
+        //Obtenemos la contraseña
+        String contra = fbd.obtenerContrasenaUsuario(receptor);
+        //Comprobamos si coincide
+        if (contra.equals(contrasena)) {
+            this.fbd.anadirAmistad(emisor, receptor);
+            synchronized (clientesConectados) {
+                if (this.clientesConectados.containsKey(emisor)) {
+                    return this.clientesConectados.get(emisor);
+                }
+            }
+            
+        }
+        return null;
+    }
+
+    @Override
+    public void rechazarAmistad(String emisor, String receptor, String contrasena) throws RemoteException {
+        //Obtenemos la contraseña
+        String contra = fbd.obtenerContrasenaUsuario(receptor);
+        //Comprobamos si coincide
+        if (contra.equals(contrasena)) {
+            this.fbd.eliminarSolicitud(emisor, receptor);
+            synchronized (clientesConectados) {
+                if (this.clientesConectados.containsKey(emisor)) {
+                    this.clientesConectados.get(emisor).respuestaSolicitud(false, receptor);
+                }
+            }
         }
     }
 }

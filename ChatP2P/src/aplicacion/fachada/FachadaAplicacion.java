@@ -80,13 +80,13 @@ public class FachadaAplicacion extends Application {
         return mensaje;
     }
 
-    public void conectarCliente(String nombre) {
+    public void conectarCliente(String nombre, String contrasena) {
         try {
             //Obtenemos una instancia de la implementación
             this.cliente = new CallbackClienteP2PImpl(nombre, this.servidor, this);
             //Llamamos al servidor para registrar al cliente
-            servidor.conectarCliente(this.cliente, nombre);
-            ArrayList<String> listaSolicitudes = servidor.obtenerSolicitudes(nombre);
+            servidor.conectarCliente(this.cliente, nombre, contrasena);
+            ArrayList<String> listaSolicitudes = servidor.obtenerSolicitudes(nombre, contrasena);
             if (!listaSolicitudes.isEmpty()) {
                 this.actualizarSolicitudes(listaSolicitudes);
                 this.anadirNotificacion("Tienes solicitudes pendientes");
@@ -136,10 +136,10 @@ public class FachadaAplicacion extends Application {
     }
 
     //Método para desconectarse
-    public void desconectar() {
+    public void desconectar(String contrasena) {
         try {
             //Informamos al servidor que nos hemos desconectado
-            this.servidor.desconectar(this.cliente.getNombre());
+            this.servidor.desconectar(this.cliente.getNombre(), contrasena);
         } catch (Exception e) {
             System.out.println("Excepcion en el cliente: " + e);
         }
@@ -185,10 +185,10 @@ public class FachadaAplicacion extends Application {
 
     //Método para enviar solicitudes de amistad
     //Devuelve true si ya existía la solicitud
-    public boolean enviarSolicitud(String emisor, String receptor) {
+    public boolean enviarSolicitud(String emisor, String receptor, String contrasena) {
         boolean existe = false;
         try {
-            existe = this.servidor.enviarSolicitud(emisor, receptor);
+            existe = this.servidor.enviarSolicitud(emisor, receptor, contrasena);
         } catch (RemoteException ex) {
             System.out.println("Error al enviar la solicitud: " + ex.getMessage());
         }
@@ -201,10 +201,10 @@ public class FachadaAplicacion extends Application {
     }
 
     //Método para añadir una amistad
-    public void anadirAmistad(String emisor) {
+    public void anadirAmistad(String emisor, String contrasena) {
         try {
-            CallbackClienteP2PInterfaz interfaz = this.servidor.anadirAmistad(emisor, this.cliente.getNombre());
-            this.fgui.actualizarSolicitudes(this.servidor.obtenerSolicitudes(this.cliente.getNombre()));
+            CallbackClienteP2PInterfaz interfaz = this.servidor.anadirAmistad(emisor, this.cliente.getNombre(), contrasena);
+            this.fgui.actualizarSolicitudes(this.servidor.obtenerSolicitudes(this.cliente.getNombre(), contrasena));
 
             Amigo amigo = new Amigo(emisor);
 
@@ -226,10 +226,10 @@ public class FachadaAplicacion extends Application {
     }
     
     //Método para rechazar una amistad
-    public void rechazarAmistad(String emisor){
+    public void rechazarAmistad(String emisor, String contrasena){
         try {
-            this.servidor.rechazarAmistad(emisor, this.cliente.getNombre());
-            this.fgui.actualizarSolicitudes(this.servidor.obtenerSolicitudes(this.cliente.getNombre()));
+            this.servidor.rechazarAmistad(emisor, this.cliente.getNombre(), contrasena);
+            this.fgui.actualizarSolicitudes(this.servidor.obtenerSolicitudes(this.cliente.getNombre(), contrasena));
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }

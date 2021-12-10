@@ -48,7 +48,9 @@ public class CallbackClienteP2PImpl extends UnicastRemoteObject implements Callb
         try {
             for (String nombre : amigos) {
                 Amigo amigo = new Amigo(nombre);
-                this.amigos.put(nombre, amigo);
+                synchronized(this.amigos){
+                    this.amigos.put(nombre, amigo);
+                }
                 this.fa.nuevoAmigo(amigo);
             }
         } catch (Exception ex) {
@@ -77,7 +79,7 @@ public class CallbackClienteP2PImpl extends UnicastRemoteObject implements Callb
 
     @Override
     public synchronized void amigoDesconectado(String nombre) throws java.rmi.RemoteException {
-        synchronized (this.amigos.get(nombre)) {
+        synchronized (this.amigos) {
             //Indicamos que el usuario está desconectado y quitamos la interfaz remota
             this.amigos.get(nombre).setEstado("Desconectado");
             this.amigos.get(nombre).setInterfaz(null);
@@ -92,7 +94,9 @@ public class CallbackClienteP2PImpl extends UnicastRemoteObject implements Callb
         //Obtener el mensaje y mostrarlo por pantalla
         fa.recibirMensaje(emisor, mensaje);
         //Añadimos el mensaje al chat con ese amigo
-        this.amigos.get(emisor).anadirMensaje(emisor, mensaje);
+        synchronized(this.amigos){
+            this.amigos.get(emisor).anadirMensaje(emisor, mensaje);
+        }
     }
 
     @Override
@@ -102,7 +106,9 @@ public class CallbackClienteP2PImpl extends UnicastRemoteObject implements Callb
 
     public void enviarMensaje(String receptor, String mensaje) {
         //Enviamos un mensaje al amigo indicado
-        this.amigos.get(receptor).enviarMensaje(this.nombre, mensaje);
+        synchronized(this.amigos){
+            this.amigos.get(receptor).enviarMensaje(this.nombre, mensaje);
+        }
     }
 
     @Override

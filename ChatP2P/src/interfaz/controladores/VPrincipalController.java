@@ -213,6 +213,12 @@ public class VPrincipalController extends Controlador implements Initializable {
                 //Añadimos el mensaje al textArea
                 textAreaChat.appendText(emisor + ": " + mensaje + "\n");
             }
+            else{
+                this.anadirNotificacion("Mensaje nuevo de " + emisor);
+            }
+        }
+        else{
+                this.anadirNotificacion("Mensaje nuevo de " + emisor);
         }
     }
 
@@ -335,7 +341,7 @@ public class VPrincipalController extends Controlador implements Initializable {
     private void enviarSolicitud(ActionEvent event) {
         //enviarSolicitud devuelve true si ya existía la solicitud
         String solicitado = this.listaUsuarios.getSelectionModel().getSelectedItem();
-        boolean existe = this.fgui.enviarSolicitud(this.usuario, solicitado);
+        boolean existe = this.fgui.enviarSolicitud(this.usuario, solicitado, contrasena);
         if (existe) {
             this.labelSolicitudes.setText("Ya enviada previamente");
         } else {
@@ -356,7 +362,7 @@ public class VPrincipalController extends Controlador implements Initializable {
     private void aceptarSolicitud(ActionEvent event) {
         if (this.listaSolicitudes.getSelectionModel().getSelectedItem() != null) {
             String emisor = this.listaSolicitudes.getSelectionModel().getSelectedItem();
-            this.fgui.anadirAmistad(emisor);
+            this.fgui.anadirAmistad(emisor, contrasena);
         }
 
     }
@@ -365,7 +371,7 @@ public class VPrincipalController extends Controlador implements Initializable {
     private void rechazarSolicitud(ActionEvent event) {
         if (this.listaSolicitudes.getSelectionModel().getSelectedItem() != null) {
             String emisor = this.listaSolicitudes.getSelectionModel().getSelectedItem();
-            this.fgui.rechazarAmistad(emisor);
+            this.fgui.rechazarAmistad(emisor, contrasena);
         }
     }
 
